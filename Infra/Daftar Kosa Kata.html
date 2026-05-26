@@ -218,7 +218,17 @@
 
     const sorted = Object.entries(allWordsMap)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 20000); 
+      .slice(0, 20000);
+    
+    if (sorted.length > 0) {
+      try {
+           localStorage.setItem('voc_cache_data', JSON.stringify(allWordsMap));
+           localStorage.setItem('voc_cache_posts', postsProcessed.toString());
+           localStorage.setItem('voc_cache_time', Date.now().toString());
+          } catch (e) {
+            console.error("Gagal menyimpan cache ke localStorage:", e);
+          }
+     }
 
     const output = document.getElementById('voc-output');
     const totalArea = document.getElementById('voc-total-area');
@@ -250,6 +260,23 @@
     document.getElementById('voc-result-area').classList.remove('voc-hidden');
   }
 
-  document.addEventListener("DOMContentLoaded", () => fetchAllPosts(startIndex));
+  document.addEventListener("DOMContentLoaded", () => {
+  const cachedData = localStorage.getItem('voc_cache_data');
+  const cachedTime = localStorage.getItem('voc_cache_time');
+  const cachedPosts = localStorage.getItem('voc_cache_posts');
+  const oneDay = 24 * 60 * 60 * 1000;
+
+  if (cachedData && cachedTime && cachedPosts && (Date.now() - Number(cachedTime) < oneDay)) {
+    allWordsMap = JSON.parse(cachedData);
+    postsProcessed = parseInt(cachedPosts, 10);
+   
+    const progressEl = document.getElementById('voc-progress');
+    if (progressEl) progressEl.textContent = "Memuat data dari cache lokal...";
+
+    finalize();
+  } else {
+    fetchAllPosts(startIndex);
+  }
+});
 })();
 </script>
