@@ -218,7 +218,16 @@
       .filter(([w, _]) => w.length > 3)
       .sort((a, b) => b[1] - a[1]); 
 
-    const topWords = sorted.slice(0, 1000); 
+    const topWords = sorted.slice(0, 1000);
+    if (topWords.length > 0) {
+      try {
+        localStorage.setItem('voc_cloud_data', JSON.stringify(allWordsMap));
+        localStorage.setItem('voc_cloud_posts', postsProcessed.toString());
+        localStorage.setItem('voc_cloud_time', Date.now().toString());
+      } catch (error) {
+        console.error("Gagal menyimpan cache WordCloud ke localStorage:", error);
+      }
+    }
     const totalArea = document.getElementById('voc-total-area');
     
     if(topWords.length > 0 && typeof WordCloud !== 'undefined') {
@@ -234,7 +243,7 @@
       const searchInput = document.getElementById('voc-search-input');
       const searchResult = document.getElementById('voc-search-result');
 
-      const minFontSize = 14;
+      const minFontSize = 12;
       const maxFontSize = 110;
       
       let massiveWordList = topWords.map(([word, count]) => {
@@ -398,6 +407,23 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => fetchAllPosts(startIndex));
+  document.addEventListener("DOMContentLoaded", () => {
+    const cachedData = localStorage.getItem('voc_cloud_data');
+    const cachedTime = localStorage.getItem('voc_cloud_time');
+    const cachedPosts = localStorage.getItem('voc_cloud_posts');
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (cachedData && cachedTime && cachedPosts && (Date.now() - Number(cachedTime) < oneDay)) {
+      allWordsMap = JSON.parse(cachedData);
+      postsProcessed = parseInt(cachedPosts, 10);
+      
+      const progressEl = document.getElementById('voc-progress');
+      if (progressEl) progressEl.textContent = "Memuat peta kosa kata dari cache lokal...";
+
+      finalize();
+    } else {
+      fetchAllPosts(startIndex);
+    }
+  });
 })();
 </script>
