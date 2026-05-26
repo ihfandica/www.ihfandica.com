@@ -14,7 +14,7 @@
 
 <style>
 .median-related-box {
-  margin: 30px 0;
+  margin: -30px 0 0 0;
   display: block;
   font-family: var(--fontBody, 'Inter', sans-serif) !important;
   width: 100%;
@@ -31,13 +31,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  border-bottom: 2px solid var(--contentBg-alt, #f0f0f0);
+  border-bottom: 2px solid var(--themeBd-color, #e4e3e1);
   padding-bottom: 10px;
 }
 
 .median-title {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   margin: 0;
   color: var(--themeC, #333);
   position: relative;
@@ -53,7 +53,7 @@
 }
 .median-more {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   margin: 0;
   color: var(--themeLink, #8875f5);
   text-decoration: none;
@@ -63,23 +63,24 @@
   display: flex;
   flex-wrap: wrap;
   gap: 15px; 
-  margin: 0 -5px;
 }
 
 .median-card {
-  width: calc(50% - 10px); 
+  width: calc(50% - 7.5px); 
   display: flex;
   flex-direction: column;
-  background: var(--contentBg, #fff);
-  border-radius: 8px;
-  overflow: hidden;
+  background-color: var(--themeBg, #fff) !important;
+  border: 2px solid var(--themeBd-color) !important;
+  border-radius: 12px !important;
+  box-shadow: 5px 5px 0px 0px var(--themeBd-color) !important;
+  padding: 15px !important;
   position: relative;
   text-decoration: none !important;
-  border: 1px solid var(--contentBd-color, rgba(0,0,0,0.05));
   box-sizing: border-box;
-  transition: transform 0.2s;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
   flex-grow: 0;
   flex-shrink: 0;
+  overflow: visible !important;
 }
 
 @media (min-width: 600px) {
@@ -89,30 +90,59 @@
 }
 
 .median-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--themeLink, #8875f5);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transform: translateY(-4px) translateX(-4px) !important;
+  box-shadow: 9px 9px 0px 0px var(--themeLink) !important;
 }
 
 .median-thumb {
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 16 / 9 !important;
+  background-color: var(--contentBg-sec) !important;
   background: var(--contentBg-alt, #eee);
   position: relative;
   overflow: hidden;
+  border-radius: 8px !important;
+  margin-bottom: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
-.median-thumb img {
+
+.median-thumb img, 
+.median-thumb .img.null {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.3s;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  will-change: transform;
+}
+
+.median-thumb img[src^="data:image/svg+xml"] {
+  width: 50px !important;
+  height: 50px !important;
+  object-fit: contain !important;
+  opacity: 0.3 !important; 
+  transition: all 0.3s ease;
+}
+
+.median-card:hover .median-thumb img,
+.median-card:hover .median-thumb .img.null {
+  transform: scale(1.12) !important;
+}
+
+.drK .median-thumb img[src^="data:image/svg+xml"] {
+  filter: invert(1) brightness(2) !important;
+  opacity: 0.8 !important;
 }
 
 .median-info {
-  padding: 10px;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
+
 .median-tag {
-  font-family: 'Fira Sans', var(--fontBody-alt, sans-serif) !important;
   font-size: 10px;
   text-transform: uppercase;
   color: var(--themeLink, #8875f5);
@@ -121,8 +151,8 @@
   display: block;
   margin-bottom: 5px;
 }
+
 .median-post-title {
-  font-family: 'Fira Sans', var(--fontBody-alt, sans-serif) !important;
   color: var(--themeC, #333);
   margin: 0;
   font-size: 13px;
@@ -134,11 +164,17 @@
   overflow: hidden;
 }
 
+.median-card:hover .median-post-title {
+  color: var(--themeLink);
+}
+
 .skeleton {
   background: var(--contentBg-alt, #eee);
   height: 180px;
   animation: pulse 1s infinite alternate;
+  border: 2px solid var(--themeBd-color) !important;
 }
+
 @keyframes pulse { from {opacity: 0.6;} to {opacity: 1;} }
 </style>
 
@@ -147,10 +183,9 @@
 (function() {
   const config = {
     maxPosts: 6, 
-    depth: 50,  
-    noImage: "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 90'%3E%3Crect width='160' height='90' fill='%238875F5' opacity='0.05'/%3E%3Cg transform='translate(40, 10) scale(0.7)'%3E%3Ccircle cx='50' cy='22' r='10' fill='%238875F5' opacity='0.4'/%3E%3Cpolygon points='20,85 40,45 60,85' fill='%238875F5' stroke='%238875F5' stroke-width='8' stroke-linejoin='round' opacity='0.4'/%3E%3Cpolygon points='55,85 75,55 90,85' fill='%238875F5' stroke='%238875F5' stroke-width='6' stroke-linejoin='round' opacity='0.4'/%3E%3C/g%3E%3C/svg%3E"
-  };
-
+    depth: 50,
+    };
+    
   function getPostTarget() {
     return document.getElementById('relatedPost') ||
            document.getElementById('postBody') || 
@@ -167,7 +202,7 @@
       labelEls.forEach(el => labels.push(el.innerText.trim().toLowerCase()));
     }
     
-    const stopWords = ["dan", "yang", "di", "ke", "dari", "ini", "itu", "untuk", "cara", "tips", "adalah", "video", "terbaru"];
+    const stopWords = ["king", "queen"];
     const keywords = title.toLowerCase().replace(/[^a-z0-9\s]/gi, '').split(' ')
       .filter(w => w.length > 3 && !stopWords.includes(w));
 
@@ -212,7 +247,7 @@
 
   function processEntries(entries, context) {
     let candidates = [];
-    const currentPath = window.location.pathname.replace(/\?.*/, '').replace(/\/$/, ''); 
+    const currentPath = window.location.pathname.replace(/\?.*/, '').replace(/\/$/, '').replace(/\.html$/, ''); 
     const addedLinks = new Set(); 
 
     entries.forEach(entry => {
@@ -220,7 +255,7 @@
       if (!alternateLink) return;
 
       const fullLink = alternateLink.href;
-      const linkPath = new URL(fullLink).pathname.replace(/\?.*/, '').replace(/\/$/, '');
+      const linkPath = new URL(fullLink).pathname.replace(/\?.*/, '').replace(/\/$/, '').replace(/\.html$/, '');
 
       if (linkPath === currentPath || addedLinks.has(linkPath)) return;      
       addedLinks.add(linkPath);
@@ -236,16 +271,16 @@
           }
         });
       }
-	  
+      
       const titleLower = title.toLowerCase();
       context.keywords.forEach(kw => {
         if (titleLower.includes(kw)) score += 2;
       });
 
-      let img = config.noImage;
+      let img = null;
       if (entry.media$thumbnail) {
         img = entry.media$thumbnail.url.replace(/\/s[0-9]+(\-c)?\//, "/w300-h168-p-k-no-nu/");
-    }
+      }
 
       candidates.push({
         title: title,
@@ -271,20 +306,23 @@
 
     let html = '';
     posts.forEach(p => {
-      html += `
-        <a href="${p.link}" class="median-card" title="${p.title}">
-          <div class="median-thumb">
-            <img src="${p.img}" alt="${p.title}" loading="lazy">
-          </div>
-          <div class="median-info">
-            <span class="median-tag">${p.tag}</span>
-            <h4 class="median-post-title">${p.title}</h4>
-          </div>
-        </a>
-      `;
-    });
-    container.innerHTML = html;
-  }
+      const thumbContent = p.img 
+      ? `<img src="${p.img}" alt="${p.title}" loading="lazy">` 
+      : `<div class="img null"></div>`;
+
+    html += `
+      <a href="${p.link}" class="median-card" title="${p.title}">
+        <div class="median-thumb">
+          ${thumbContent}
+        </div>
+        <div class="median-info">
+          <span class="median-tag">${p.tag}</span>
+          <h4 class="median-post-title">${p.title}</h4>
+        </div>
+      </a>`; 
+      });
+      container.innerHTML = html;
+     }
 
   window.addEventListener('load', initWidget);
 
