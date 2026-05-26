@@ -1,0 +1,161 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.5.1/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+</script>
+
+<div class="word-counter-container" style="font-family: var(--fontBody);">
+    
+    <div class="box-nw info">
+        Alat ini dapat menghitung jumlah kosa kata. Anda bisa menempelkan teks atau mengunggah file berekstensi <b>.txt</b>, <b>.docx</b>, atau <b>.pdf</b>.
+    </div>
+
+    <div class="wc-controls" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+        
+        <label for="file-upload" class="button" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; margin: 0;">
+            <svg class="line" viewBox="0 0 24 24" width="18" height="18"><path d="M9 22h6c5 0 7-2 7-7V9c0-5-2-7-7-7H9C4 2 2 4 2 9v6c0 5 2 7 7 7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 10l3-3 3 3M12 7v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="upload-text">Unggah File (.txt, .docx, .pdf)</span>
+        </label>
+        <input type="file" id="file-upload" accept=".txt, .docx, .pdf" style="display: none;">
+        
+        <button id="clear-btn" class="button ln" style="cursor: pointer; margin: 0;">Bersihkan Teks</button>
+    </div>
+
+    <div class="wc-input-area">
+        <textarea id="text-input" placeholder="Tempelkan teks Anda di sini atau unggah dokumen..." style="width: 100%; height: 250px; padding: 15px; border: 1px solid var(--inputBd-color); border-radius: var(--inputBd-radius); background-color: var(--inputBg); color: var(--inputC); font-family: var(--fontBody); font-size: 1rem; line-height: 1.6; resize: vertical; outline: none; box-sizing: border-box; transition: border-color 0.3s;"></textarea>
+    </div>
+
+    <div class="wc-stats" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 120px; padding: 20px; border: 1px solid var(--contentBd-color); border-radius: var(--contentBd-radiusA); background-color: var(--contentBg-alt); text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--themeLink); line-height: 1;" id="word-count">0</div>
+            <div style="font-size: 0.9rem; margin-top: 8px; opacity: 0.8;">Kosa Kata</div>
+        </div>
+        <div style="flex: 1; min-width: 120px; padding: 20px; border: 1px solid var(--contentBd-color); border-radius: var(--contentBd-radiusA); background-color: var(--contentBg-alt); text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--themeLink); line-height: 1;" id="char-count">0</div>
+            <div style="font-size: 0.9rem; margin-top: 8px; opacity: 0.8;">Karakter (Tanpa Spasi)</div>
+        </div>
+        <div style="flex: 1; min-width: 120px; padding: 20px; border: 1px solid var(--contentBd-color); border-radius: var(--contentBd-radiusA); background-color: var(--contentBg-alt); text-align: center;">
+            <div style="font-size: 2.5rem; font-weight: 700; color: var(--themeLink); line-height: 1;" id="char-all-count">0</div>
+            <div style="font-size: 0.9rem; margin-top: 8px; opacity: 0.8;">Total Karakter</div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textInput = document.getElementById('text-input');
+    const fileUpload = document.getElementById('file-upload');
+    const clearBtn = document.getElementById('clear-btn');
+    const uploadText = document.getElementById('upload-text');
+    
+    const wordCountDisplay = document.getElementById('word-count');
+    const charCountDisplay = document.getElementById('char-count');
+    const charAllCountDisplay = document.getElementById('char-all-count');
+
+    function updateStats() {
+        const text = textInput.value;
+        charAllCountDisplay.textContent = text.length.toLocaleString('id-ID');
+        const textWithoutSpace = text.replace(/\s+/g, '');
+        charCountDisplay.textContent = textWithoutSpace.length.toLocaleString('id-ID');
+
+        let wordCount = 0;
+        if (text.trim().length > 0) {
+            if (window.Intl && Intl.Segmenter) {
+                const segmenter = new Intl.Segmenter(undefined, { granularity: 'word' });
+                const segments = segmenter.segment(text);
+                for (const segment of segments) {
+                    if (segment.isWordLike) wordCount++;
+                }
+            } else {
+                wordCount = text.trim().split(/\s+/).length;
+            }
+        }
+        wordCountDisplay.textContent = wordCount.toLocaleString('id-ID');
+    }
+
+    textInput.addEventListener('input', updateStats);
+
+    clearBtn.addEventListener('click', function() {
+        textInput.value = '';
+        updateStats();
+        textInput.focus();
+    });
+
+    fileUpload.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const originalBtnText = uploadText.innerText;
+        uploadText.innerText = "Memproses...";
+        textInput.value = "Sedang membaca file, mohon tunggu...";
+
+        const extension = file.name.split('.').pop().toLowerCase();
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const arrayBuffer = e.target.result;
+
+            if (extension === 'txt') {
+                const decoder = new TextDecoder('utf-8');
+                textInput.value = decoder.decode(arrayBuffer);
+                updateStats();
+                uploadText.innerText = originalBtnText;
+
+            } else if (extension === 'docx') {
+                mammoth.extractRawText({arrayBuffer: arrayBuffer})
+                    .then(function(result){
+                        textInput.value = result.value;
+                        updateStats();
+                    })
+                    .catch(function(err){
+                        textInput.value = "Gagal membaca DOCX.";
+                        console.error(err);
+                    })
+                    .finally(function(){
+                        uploadText.innerText = originalBtnText;
+                    });
+
+            } else if (extension === 'pdf') {
+                const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                pdfjsLib.getDocument(arrayBuffer).promise.then(function(pdf) {
+                    let totalPages = pdf.numPages;
+                    let textPromises = [];
+              
+                    for (let i = 1; i <= totalPages; i++) {
+                        textPromises.push(pdf.getPage(i).then(function(page) {
+                            return page.getTextContent().then(function(textContent) {
+                                return textContent.items.map(function(item) { return item.str; }).join(' ');
+                            });
+                        }));
+                    }
+            
+                    Promise.all(textPromises).then(function(texts) {
+                        textInput.value = texts.join('\n\n');
+                        updateStats();
+                        uploadText.innerText = originalBtnText;
+                    });
+                }).catch(function(err){
+                    textInput.value = "Gagal membaca PDF. Pastikan PDF tidak dienkripsi/terkunci.";
+                    console.error(err);
+                    uploadText.innerText = originalBtnText;
+                });
+            } else {
+                textInput.value = "Format file tidak didukung.";
+                uploadText.innerText = originalBtnText;
+            }
+        };
+
+        reader.readAsArrayBuffer(file);
+        event.target.value = '';
+    });
+
+    textInput.addEventListener('focus', function() {
+        this.style.borderColor = 'var(--themeLink)';
+        this.style.boxShadow = '0 0 0 0.5px var(--themeLink) inset';
+    });
+    textInput.addEventListener('blur', function() {
+        this.style.borderColor = 'var(--inputBd-color)';
+        this.style.boxShadow = 'none';
+    });
+});
+</script>
