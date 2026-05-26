@@ -99,6 +99,7 @@
   }
   
   .rp-header {
+    font-family: var(--fontHead);
     font-size: 10px;
     font-weight: 700;
     color: #8875F5;
@@ -120,10 +121,23 @@
     border: 1px solid var(--border-color);
   }
 
-  #rp-image { width: 100%; height: 100%; object-fit: cover; }
+  #rp-image, 
+  .rp-img-frame .img.null { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    will-change: transform;
+  }
+  
+  #rp-content:hover #rp-image,
+  #rp-content:hover .rp-img-frame .img.null {
+    transform: scale(1.1) !important;
+  }
   
   .rp-info { flex: 1; min-width: 0; }
   #rp-title {
+    font-family: var(--fontBody-alt);
     font-size: 15px;
     font-weight: 600;
     line-height: 1.4;
@@ -136,6 +150,13 @@
   }
   #rp-content:hover #rp-title { color: #8875F5; }
   #rp-date { font-size: 11px; opacity: 0.5; color: var(--text-color); }
+  
+  .rp-img-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+
 </style>
 
 <div id="random-post-daily">
@@ -152,9 +173,9 @@
   <div class="rp-inner" id="rp-inner-content">
     <div class="rp-header">Postingan Pilihan Hari Ini</div>
     <a id="rp-content" href="#">
-      <div class="rp-img-frame">
-        <img id="rp-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Thumbnail" />
+      <div class="rp-img-frame" id="rp-image-container">
       </div>
+
       <div class="rp-info">
         <h3 id="rp-title">Memuat...</h3>
         <span id="rp-date"></span>
@@ -174,7 +195,12 @@
     document.getElementById('rp-title').innerText = data.title;
     document.getElementById('rp-content').href = data.url;
     document.getElementById('rp-date').innerText = data.date;
-    document.getElementById('rp-image').src = data.imgUrl;
+      const imgContainer = document.getElementById('rp-image-container');
+       if (data.imgUrl) {
+         imgContainer.innerHTML = `<img src="${data.imgUrl}" alt="${data.title}" id="rp-image" />`;
+       } else {
+         imgContainer.innerHTML = `<div class="img null"></div>`;
+       }
     document.getElementById('loading-message').style.display = 'none';
     document.getElementById('rp-inner-content').style.display = 'block';
     document.getElementById('random-post-daily').style.display = 'block';
@@ -200,8 +226,8 @@
           title: entry.title.$t,
           url: entry.link.find(l => l.rel === 'alternate').href,
           date: new Date(entry.published.$t).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
-          imgUrl: entry.media$thumbnail ? entry.media$thumbnail.url.replace(/\/s72\-c/, "/s200") : "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%238875F5' opacity='0.05'/%3E%3Cg transform='translate(5, 10) scale(0.9)'%3E%3Ccircle cx='50' cy='22' r='10' fill='%238875F5' opacity='0.4'/%3E%3Cpolygon points='20,85 40,45 60,85' fill='%238875F5' stroke='%238875F5' stroke-width='8' stroke-linejoin='round' opacity='0.4'/%3E%3Cpolygon points='55,85 75,55 90,85' fill='%238875F5' stroke='%238875F5' stroke-width='6' stroke-linejoin='round' opacity='0.4'/%3E%3C/g%3E%3C/svg%3E"
-        }));
+          imgUrl: entry.media$thumbnail ? entry.media$thumbnail.url.replace(/\/s72\-c/, "/s200") : null
+        }));          
         
         accumulatedPosts = accumulatedPosts.concat(posts);
         if (data.feed.entry.length === maxResults) {
