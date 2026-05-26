@@ -1,192 +1,121 @@
 <div class='pinned-posts-container'>
   <div id='pinned-posts-root' class='pinned-posts-grid'>
-    <svg class="pinned-loader" viewBox="0 0 50 50">
-  <circle cx="25" cy="25" r="20" fill="none"></circle>
-</svg>
+    <svg class="pinned-loader" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none"></circle></svg>
   </div>
 </div>
 
 <style>
-  .pinned-posts-container {
-    font-family: var(--fontBody), sans-serif;
-    padding: 20px 15px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .pinned-posts-container { font-family: var(--fontBody), sans-serif; padding: 20px 15px; max-width: 1100px; margin: 0 auto; }
+  
   .pinned-posts-grid {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important; 
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 15px !important;
   }
 
   @media screen and (min-width: 800px) {
-    .pinned-posts-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
+  .pinned-posts-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 25px !important;
     }
-    .pinned-posts-container { padding: 20px; }
   }
     
   .pinned-item {
-    width: auto !important; 
-    min-width: 0 !important;
-    background: var(--themeBg);
-    border: 1px solid var(--themeBd-color);
-    border-radius: 8px;
-    padding: var(--postPadding);
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    background-color: var(--themeBg) !important; border: 2px solid var(--themeBd-color) !important;
+    border-radius: 12px !important; box-shadow: 5px 5px 0px 0px var(--themeBd-color) !important;
+    padding: 15px !important; transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+    display: flex; flex-direction: column;
   }
-  .pinned-item:hover {
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
-    border-color: var(--themeLink);
-  }
+  
+  .pinned-item:hover { transform: translateY(-4px) translateX(-4px) !important; box-shadow: 9px 9px 0px 0px var(--themeLink) !important; }
+  
   .pinned-thumb-link {
-    display: block;
-    width: 100%;
-    margin-bottom: 15px;
-    overflow: hidden;
-    border-radius: 8px;
-    aspect-ratio: 16/9;
-    background-color: var(--themeBg-alt);
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    width: 100%; margin-bottom: 8px !important; overflow: hidden !important;
+    border-radius: 8px !important; aspect-ratio: 16/9 !important;
+    background-color: var(--contentBg-sec) !important;
   }
+  
   .pinned-thumb {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.5s ease;
+    pointer-events: none;
   }
-  .pinned-item:hover .pinned-thumb {
-    transform: scale(1.08);
-  }
-  .pinned-title {
-    margin: 0;
-    text-align: center;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    font-family: var(--fontBody-alt);
-    font-weight: 600;
-  }
-  .pinned-title a {
-    color: var(--themeC);
-    text-decoration: none;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .pinned-title a:hover {
-    color: var(--themeLink);
-  }
-  .pinned-loader {
-  display: block;
-  grid-column: 1 / -1;
-  width: 40px;
-  height: 40px;
-  margin: 40px auto;
-  animation: pin-spin 2s linear infinite;
-}
-
-.pinned-loader circle {
-  stroke: var(--themeLink);
-  stroke-width: 4;
-  stroke-linecap: round;
-  animation: pin-dash 1.5s ease-in-out infinite;
-}
-
-@keyframes pin-spin {
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes pin-dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
-  }
-}
   
-  @media screen and (max-width: 896px) {
-    .pinned-posts-grid { grid-template-columns: repeat(2, 1fr); }
+  .pinned-thumb-link .img.null {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease !important;
   }
-  @media screen and (max-width: 500px) {
-    .pinned-posts-grid { grid-template-columns: 1fr; }
+  
+  .pinned-item:hover .pinned-thumb,
+  .pinned-item:hover .img.null { 
+    transform: scale(1.08) !important; 
   }
+  .pinned-title { margin: 0; text-align: center; font-size: 0.9rem; line-height: 1.4; font-family: var(--fontBody-alt); font-weight: 600; }
+  .pinned-title a { color: var(--themeC); text-decoration: none; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .pinned-title a:hover { color: var(--themeLink); }
+  
+  .pinned-loader { display: block; grid-column: 1 / -1; width: 40px; height: 40px; margin: 40px auto; animation: pin-spin 2s linear infinite; }
+  .pinned-loader circle { stroke: var(--themeLink); stroke-width: 4; stroke-linecap: round; animation: pin-dash 1.5s ease-in-out infinite; }
+  @keyframes pin-spin { 100% { transform: rotate(360deg); } }
+  @keyframes pin-dash { 0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; } 50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; } 100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; } }
 </style>
 
 <script>
 (function() {
-  const API_KEY = 'AIzaSyDPliBpzAnGEJhxNuhVdHIG7iri3ga4_0E';
-  const BLOG_ID = '5360007822337580481';
-  
   const POST_URLS = [
     'https://www.ihfandicahyo.com/2026/02/aku-hanyalah-pulpen.html',
+    'https://www.ihfandicahyo.com/2024/11/senandung-ilmu.html',
     'https://www.ihfandicahyo.com/2025/11/luruh.html',
     'https://www.ihfandicahyo.com/2025/11/nona-malam.html',
     'https://www.ihfandicahyo.com/2025/06/rembulan.html',
     'https://www.ihfandicahyo.com/2025/11/cinta-kata-kuncinya.html'
   ];
 
-  function extractImage(content) {
-    const div = document.createElement('div');
-    div.innerHTML = content;
-    const img = div.querySelector('img');
-    return img ? img.src : null;
-  }
-
   async function fetchPostData(url) {
     try {
-      const path = new URL(url).pathname;
-      const apiUrl = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts/bypath?path=${path}&key=${API_KEY}`;
+      const urlObj = new URL(url);
+      const apiUrl = `${urlObj.origin}/feeds/posts/summary?alt=json&redirect=false&max-results=1&path=${urlObj.pathname}`;
       const res = await fetch(apiUrl);
-      return await res.json();
-    } catch (e) {
-      return null;
-    }
+      const data = await res.json();
+      return (data.feed && data.feed.entry) ? data.feed.entry[0] : null;
+    } catch (e) { return null; }
   }
 
   async function initPinned() {
     const root = document.getElementById('pinned-posts-root');
     if (!root) return;
-
     const results = await Promise.all(POST_URLS.map(url => fetchPostData(url)));
+    const validResults = results.filter(post => post !== null);
     
     root.innerHTML = '';
-    results.forEach(post => {
-      if (post && post.title) {
-        let imgUrl = post.images ? post.images[0].url : extractImage(post.content);
-        if (!imgUrl) imgUrl = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 90'%3E%3Crect width='160' height='90' fill='%238875F5' opacity='0.05'/%3E%3Cg transform='translate(40, 10) scale(0.7)'%3E%3Ccircle cx='50' cy='22' r='10' fill='%238875F5' opacity='0.4'/%3E%3Cpolygon points='20,85 40,45 60,85' fill='%238875F5' stroke='%238875F5' stroke-width='8' stroke-linejoin='round' opacity='0.4'/%3E%3Cpolygon points='55,85 75,55 90,85' fill='%238875F5' stroke='%238875F5' stroke-width='6' stroke-linejoin='round' opacity='0.4'/%3E%3C/g%3E%3C/svg%3E";
-        imgUrl = imgUrl.replace(/\/s\d+(-c)?\//, '/s600-c/');
+    validResults.forEach((entry, index) => {
+      if (entry && entry.title) {
+        const title = entry.title.$t;
+        const postUrl = entry.link.find(l => l.rel === 'alternate')?.href || POST_URLS[index];
+        let imgUrl = entry.media$thumbnail ? entry.media$thumbnail.url.replace(/\/s\d+(\-c)?\//, '/s600-c/') : null;
 
         const card = document.createElement('div');
         card.className = 'pinned-item';
+        
+        // Memanfaatkan class tema .img.null
+        const thumbContent = imgUrl 
+          ? `<img class="pinned-thumb" src="${imgUrl}" alt="${title}" loading="lazy"/>` 
+          : `<div class="img null"></div>`;
+
         card.innerHTML = `
-          <a href="${post.url}" class="pinned-thumb-link">
-            <img class="pinned-thumb" src="${imgUrl}" alt="${post.title}"/>
-          </a>
-          <h3 class="pinned-title">
-            <a href="${post.url}">${post.title}</a>
-          </h3>
+          <a href="${postUrl}" class="pinned-thumb-link">${thumbContent}</a>
+          <h3 class="pinned-title"><a href="${postUrl}">${title}</a></h3>
         `;
         root.appendChild(card);
       }
     });
   }
 
-  if (document.readyState === 'complete') {
-    initPinned();
-  } else {
-    window.addEventListener('load', initPinned);
-  }
+  window.addEventListener('load', initPinned);
 })();
 </script>
