@@ -156,7 +156,6 @@
   align-items: center;
   justify-content: center;
   }
-
 </style>
 
 <div id="random-post-daily">
@@ -195,12 +194,12 @@
     document.getElementById('rp-title').innerText = data.title;
     document.getElementById('rp-content').href = data.url;
     document.getElementById('rp-date').innerText = data.date;
-      const imgContainer = document.getElementById('rp-image-container');
-       if (data.imgUrl) {
-         imgContainer.innerHTML = `<img src="${data.imgUrl}" alt="${data.title}" id="rp-image" />`;
-       } else {
-         imgContainer.innerHTML = `<div class="img null"></div>`;
-       }
+    const imgContainer = document.getElementById('rp-image-container');
+    if (data.imgUrl) {
+      imgContainer.innerHTML = `<img src="${data.imgUrl}" alt="${data.title}" id="rp-image" />`;
+    } else {
+      imgContainer.innerHTML = `<div class="img null"></div>`;
+    }
     document.getElementById('loading-message').style.display = 'none';
     document.getElementById('rp-inner-content').style.display = 'block';
     document.getElementById('random-post-daily').style.display = 'block';
@@ -214,11 +213,11 @@
       return ((t ^ t >>> 14) >>> 0) / 4294967296;
     }
   }
-
-  async function fetchAllPosts(startIndex = 1, accumulatedPosts = []) {
+  
+  async function fetchAllPosts(startIndex = 1, accumulatedPosts = [], publishedMax = '') {
     const maxResults = 150; 
     try {
-      const res = await fetch(`/feeds/posts/summary?alt=json&start-index=${startIndex}&max-results=${maxResults}`);
+      const res = await fetch(`/feeds/posts/summary?alt=json&start-index=${startIndex}&max-results=${maxResults}&published-max=${publishedMax}`);
       const data = await res.json();
       
       if (data.feed.entry && data.feed.entry.length > 0) {
@@ -231,7 +230,7 @@
         
         accumulatedPosts = accumulatedPosts.concat(posts);
         if (data.feed.entry.length === maxResults) {
-          return await fetchAllPosts(startIndex + maxResults, accumulatedPosts);
+          return await fetchAllPosts(startIndex + maxResults, accumulatedPosts, publishedMax);
         }
       }
       return accumulatedPosts;
@@ -257,7 +256,10 @@
     document.getElementById('random-post-daily').style.display = 'block';
 
     try {
-      const allPosts = await fetchAllPosts();
+      const yesterdayMax = new Date();
+      yesterdayMax.setHours(0, 0, 0, 0);
+      const publishedMaxISO = yesterdayMax.toISOString();
+      const allPosts = await fetchAllPosts(1, [], publishedMaxISO);
       
       if (allPosts.length > 0) {
         const dateString = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
@@ -268,8 +270,7 @@
         }
 
         const rollDice = seededRandom(Math.abs(seed));
-        const pseudoRandom = rollDice(); 
-
+        const pseudoRandom = rollDice();
         const randomIndex = Math.floor(pseudoRandom * allPosts.length);
         const selectedPost = allPosts[randomIndex];
         
