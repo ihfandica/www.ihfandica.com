@@ -1,0 +1,593 @@
+<div class="arisan-page-container">
+  
+  <div class="arisan-card-head">
+    <h2>Sistem Pengocok Arisan Digital</h2>
+    <p>Unggah file arisan Anda, kelola riwayat secara otomatis, dan unduh data pencadangan dalam satu file tunggal. Jika tidak punya data (.txt) silakan ketik manual di kotak yang tersedia. Semua proses dilakukan di lokal, tidak ada data yang di unggah. :-)</p>
+    <div class="box-nw info">Sebelum keluar, unduh data terlebih dahulu agar dapat digunakan kembali di masa mendatang tanpa memasukan data ulang.</div>
+  </div>
+  
+<details class="ac">
+<summary>Lihat langkahnya</summary>
+  <div class="aC">
+   <ul class="step" style="text-align: justify" >
+     <li>Pilih file arisan .txt jika sudah punya. Apabila belum, masukkan manual dalam kotak <b>"Pratinjau File / Edit Manual:"</b>.</li>
+     <li>Setelah data di pilih, maka kotak akan terisi otomatis. Setelah kotak terisi, pastikan kembali datanya untuk yang belum di kocok atau sudah di kocok. <b>Lihat kotak! <br />"== SUDAH KELUAR =="</b><br /> adalah batas untuk bagian atas yang belum di kocok dan bagian bawah yang sudah di kocok.</li>
+     <li>Tekan tombol <b>"Mulai Kocok Arisannya"</b> dan tunggu.</li>
+     <li>Jika sudah di lakukan, pastikan unduh datanya agar di masa depan tidak perlu mengisi ulang manual.</li>
+     <li>Isi kotak pengecualian pemenang dengan angka jika ingin nama-nama yang telah keluar tidak keluar kembali. Aturannya adalah nama yang di kocok identik. Contoh data dalam kocokan:<br />
+       <div class='table withBg hoverBg w50'>
+  <table>
+    <thead>
+      <tr>
+        <th>Nama Peserta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>ABC</td></tr>
+      <tr><td>ABC 1</td></tr>
+      <tr><td>ABC 2</td></tr>
+      <tr><td>DEF</td></tr>
+      <tr><td>DEF 1</td></tr>
+      <tr><td>DEF 2</td></tr>
+      <tr><td>GHI</td></tr>
+      <tr><td>GHI 1</td></tr>
+      <tr><td>GHI 2</td></tr>
+      <tr><td>JKL</td></tr>
+      <tr><td>JKL 1</td></tr>
+      <tr><td>JKL 2</td></tr>
+    </tbody>
+  </table>
+</div><div>Anggaplah ABC dan DEF sudah masuk daftar <br /><b>"== SUDAH KELUAR ==" </b><br />(terdapat 2 nama):<br />
+       <div class='table withBg hoverBg w50'>
+  <table>
+    <thead>
+      <tr>
+        <th>Nama Peserta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>...</td></tr>
+      <tr><td>...</td></tr>
+      <tr><td>== SUDAH KELUAR ==</td></tr>
+      <tr><td>ABC</td></tr>
+      <tr><td>DEF</td></tr>
+    </tbody>
+  </table>
+</div>
+       Maka jika kotak di isi angka 2, hasilnya nama ABC dan DEF tidak akan di kocok kembali. Apabila dalam satu periode terdapat dua kali kocokan, setelah kocokan pertama angkanya dapat di naikkan jadi 3 (2 untuk mengecualikan ABC dan DEF, 1 lagi untuk mengecualikan hasil kocokan terbaru).</li>
+   </ul>
+  </div>
+<div class="box-nw warning" style="text-align: justify" ><b>Reset:</b> Mengembalikan data yang telah terkocok menjadi tidak terkocok semua.</div>
+<div class="box-nw danger" style="text-align: justify" ><b>Clear:</b> Menghapus semua data, termasuk yang telah di pilih melalui menu Pilih File Arisan .txt.</div>
+</details>
+<br />
+  
+  <div class="arisan-layout-grid">
+    <div class="arisan-panel">
+      <div class="arisan-form-group">
+        <label class="arisan-label">Pilih File Daftar Arisan (.txt)</label>
+        <div class="arisan-file-wrapper">
+          <input type="file" id="fileInput" accept=".txt" />
+          <span class="file-custom-btn">Pilih File Arisan .txt</span>
+        </div>
+      </div>
+
+      <div class="arisan-scan-box" id="scanBox">
+        <div class="scan-item">
+          <span class="scan-label">Belum Dikocok (Aktif):</span>
+          <span class="scan-value status-active" id="remainingLines">0 Peserta</span>
+        </div>
+        <div class="scan-item">
+          <span class="scan-label">Sudah Keluar (Riwayat):</span>
+          <span class="scan-value status-done" id="totalHistoryLines">0 Peserta</span>
+        </div>
+      </div>
+      
+      <div class="arisan-form-group" style="margin-bottom: 18px;">
+        <label class="arisan-label" style="color: var(--themeLink);">Kecualikan Varian Pemenang Terakhir (Dari Bawah):</label>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <input type="number" id="exclusionDepth" value="0" min="0" style="width: 80px; padding: 10px; background-color: var(--inputBg); color: var(--themeC); border: 1px solid var(--inputBd-color); border-radius: var(--inputBd-radius, 4px); text-align: center; font-weight: bold;" />
+          <span style="font-size: 12px; opacity: 0.8;">Baris riwayat terbaru akan dicegah keluar lagi beserta variasi angkanya.</span>
+        </div>
+      </div>
+
+      <div class="arisan-actions">
+        <button type="button" class="arisan-btn btn-primary btn-pulse" id="btnKocok" disabled>
+          <svg class="btn-icon-art" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12.15 16.5v2.1" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M7.15 22h10v-1c0-1.1-.9-2-2-2h-6c-1.1 0-2 .9-2 2v1Z" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10"></path>
+            <path d="M6.15 22h12M12 16c-3.87 0-7-3.13-7-7V6c0-2.21 1.79-4 4-4h6c2.21 0 4 1.79 4 4v3c0 3.87-3.13 7-7 7Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M5.47 11.65c-.75-.24-1.41-.68-1.93-1.2-.9-1-1.5-2.2-1.5-3.6s1.1-2.5 2.5-2.5h.65c-.2.46-.3.97-.3 1.5v3c0 1 .21 1.94.58 2.8ZM18.53 11.65c.75-.24 1.41-.68 1.93-1.2.9-1 1.5-2.2 1.5-3.6s-1.1-2.5-2.5-2.5h-.65c.2.46.3.97.3 1.5v3c0 1-.21 1.94-.58 2.8Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Mulai Kocok Arisannya
+        </button>
+      </div>
+
+      <div class="arisan-utility-actions" style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px;">
+        <button type="button" class="arisan-btn btn-success" id="btnDownload" disabled style="flex: 2; min-width: 180px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Simpan File (.txt)
+        </button>
+        <button type="button" class="arisan-btn btn-secondary" id="btnReset" disabled style="flex: 1;">
+          Reset
+        </button>
+        <button type="button" class="arisan-btn btn-danger" id="btnClear" disabled style="flex: 1;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+          Clear
+        </button>
+      </div>
+
+      <div class="arisan-form-group" style="margin-top: 20px;">
+        <label class="arisan-label">Pratinjau File / Edit Manual:</label>
+        <textarea id="textPreview" placeholder="Struktur file teks akan tampil di sini otomatis atau ketik nama peserta di sini (1 baris 1 nama)..."></textarea>
+      </div>
+    </div>
+
+    <div class="arisan-panel section-display">
+      <div class="display-main-box">
+        <div class="display-title">PEMENANG SAAT INI</div>
+        <div class="display-winner-name" id="winnerDisplay">SIAP DIKOCOK</div>
+      </div>
+
+      <div class="riwayat-box">
+        <div class="riwayat-head">Riwayat Pemenang Terdata (Aman)</div>
+        <ol class="riwayat-list" id="historyList">
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.arisan-page-container {
+  font-family: var(--fontBody), sans-serif;
+  color: var(--themeC);
+  background-color: var(--themeBg);
+  padding: 20px;
+  max-width: var(--contentPage-maxWidth, 820px);
+  margin: 0 auto;
+}
+.arisan-card-head {
+  text-align: justify;
+  text-justify: inter-word;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--themeBd-color);
+  padding-bottom: 15px;
+}
+.arisan-card-head h2 {
+  font-family: var(--fontHead), sans-serif;
+  font-size: var(--head-H2, 1.8rem);
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--themeC);
+}
+.arisan-card-head p {
+  font-size: var(--fontSize, 14px);
+  opacity: 0.8;
+  margin: 0;
+}
+.arisan-layout-grid {
+  display: block;
+}
+@media screen and (min-width: 768px) {
+  .arisan-layout-grid {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  .arisan-panel {
+    display: table-cell;
+    vertical-align: top;
+    width: 50%;
+  }
+  .arisan-panel:first-child {
+    padding-right: 15px;
+  }
+  .arisan-panel:last-child {
+    padding-left: 15px;
+  }
+}
+.arisan-form-group {
+  margin-bottom: 15px;
+}
+.arisan-label {
+  display: block;
+  font-family: var(--fontHead), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.arisan-file-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+}
+.arisan-file-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+}
+.file-custom-btn {
+  display: block;
+  padding: 12px;
+  background-color: var(--themeBg-alt);
+  border: 1px dashed var(--themeBd-color);
+  border-radius: var(--contentBd-radius, 4px);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+.arisan-scan-box {
+  background-color: var(--themeBg-alt);
+  border: 1px solid var(--themeBd-color);
+  border-radius: var(--contentBd-radius, 4px);
+  padding: 12px 15px;
+  margin-bottom: 20px;
+}
+.scan-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 0;
+}
+.scan-item:not(:last-child) {
+  border-bottom: 1px solid var(--themeBg-sec);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+.scan-label {
+  opacity: 0.85;
+}
+.scan-value {
+  font-family: var(--fontCode), monospace;
+  font-weight: 700;
+}
+.scan-value.status-active { color: var(--themeLink); }
+.scan-value.status-done { color: #e03b3b; }
+#textPreview {
+  width: 100%;
+  height: 140px;
+  background-color: var(--inputBg);
+  color: var(--themeC);
+  border: 1px solid var(--inputBd-color);
+  border-radius: var(--inputBd-radius, 4px);
+  padding: 10px;
+  font-family: var(--fontCode), monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.arisan-actions {
+  display: flex;
+}
+.arisan-btn {
+  font-family: var(--fontHead), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 12px 14px;
+  border-radius: var(--buttonBd-radius, 4px);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--tDuration) ease;
+}
+.arisan-btn svg {
+  width: 15px;
+  height: 15px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--themeLink) 0%, #6e56cf 100%) !important;
+  color: #ffffff !important;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(136, 117, 245, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.btn-icon-art {
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.25));
+  stroke: #ffffff !important;
+  fill: rgba(255, 255, 255, 0.15) !important;
+  transition: transform 0.3s ease;
+}
+.btn-primary:hover:not(:disabled) .btn-icon-art {
+  transform: rotate(15deg) scale(1.15);
+}
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.95;
+  box-shadow: 0 6px 20px rgba(136, 117, 245, 0.45);
+}
+@keyframes pulseArt {
+  0% { box-shadow: 0 0 0 0 rgba(136, 117, 245, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(136, 117, 245, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(136, 117, 245, 0); }
+}
+.btn-pulse:not(:disabled) {
+  animation: pulseArt 2s infinite;
+}
+.btn-success {
+  background-color: #2da77a !important;
+  color: #ffffff !important;
+}
+.btn-secondary {
+  background-color: var(--themeBg-sec) !important;
+  color: var(--themeC) !important;
+  border: 1px solid var(--themeBd-color) !important;
+}
+.btn-danger {
+  background-color: #e03b3b !important;
+  color: #ffffff !important;
+}
+.arisan-btn:disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed;
+  animation: none !important;
+  box-shadow: none !important;
+}
+.display-main-box {
+  background-color: var(--themeBg-sec);
+  border: 2px solid var(--themeBd-color);
+  border-radius: 10px;
+  padding: 30px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 4px 4px 0px 0px var(--themeBd-color);
+}
+.display-title {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+.display-winner-name {
+  font-family: var(--fontHead), sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--themeLink);
+  word-break: break-word;
+}
+.riwayat-box {
+  border: 1px solid var(--themeBd-color);
+  border-radius: var(--contentBd-radius, 4px);
+  background-color: var(--themeBg);
+  overflow: hidden;
+}
+.riwayat-head {
+  background-color: var(--themeBg-alt);
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--themeBd-color);
+}
+.riwayat-list {
+  margin: 0;
+  padding: 0 0 0 30px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+.riwayat-list li {
+  padding: 8px 10px 8px 0;
+  font-size: 13px;
+  border-bottom: 1px solid var(--themeBg-alt);
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const fileInput = document.getElementById("fileInput");
+  const textPreview = document.getElementById("textPreview");
+  const remainingLinesDisplay = document.getElementById("remainingLines");
+  const totalHistoryLinesDisplay = document.getElementById("totalHistoryLines");
+  const btnKocok = document.getElementById("btnKocok");
+  const btnDownload = document.getElementById("btnDownload");
+  const btnReset = document.getElementById("btnReset");
+  const btnClear = document.getElementById("btnClear");
+  const winnerDisplay = document.getElementById("winnerDisplay");
+  const historyList = document.getElementById("historyList");
+  const fileCustomBtn = document.querySelector(".file-custom-btn");
+  const exclusionDepthInput = document.getElementById("exclusionDepth");
+
+  let activeList = [];   
+  let historyListArray = []; 
+  let isShuffling = false;
+  const dividerString = "== SUDAH KELUAR ==";
+
+  fileInput.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    fileCustomBtn.innerText = file.name;
+
+    const reader = new FileReader();
+    reader.onload = function (evt) {
+      parseAndLoadData(evt.target.result);
+    };
+    reader.readAsText(file);
+  });
+
+  textPreview.addEventListener("input", function () {
+    parseAndLoadData(textPreview.value, false);
+  });
+
+  function parseAndLoadData(rawText, updateTextArea = true) {
+    const lines = rawText.split(/\r?\n/).map(line => line.trim());
+    activeList = [];
+    historyListArray = [];
+    let isHistorySection = false;
+
+    for (let line of lines) {
+      if (line === dividerString) {
+        isHistorySection = true;
+        continue;
+      }
+      if (line.length === 0) continue;
+
+      if (isHistorySection) {
+        historyListArray.push(line);
+      } else {
+        activeList.push(line);
+      }
+    }
+
+    if (updateTextArea) {
+      refreshTextAreaContent();
+    }
+    
+    renderHistoryUI();
+    updateScanDisplay();
+  }
+
+  function refreshTextAreaContent() {
+    let content = activeList.join("\n");
+    if (historyListArray.length > 0) {
+      content += "\n" + dividerString + "\n" + historyListArray.join("\n");
+    }
+    textPreview.value = content;
+  }
+
+  function renderHistoryUI() {
+    historyList.innerHTML = "";
+    historyListArray.forEach(name => {
+      const li = document.createElement("li");
+      li.innerText = name;
+      historyList.appendChild(li);
+    });
+    historyList.scrollTop = historyList.scrollHeight;
+  }
+
+  function updateScanDisplay() {
+    remainingLinesDisplay.innerText = activeList.length + " Peserta";
+    totalHistoryLinesDisplay.innerText = historyListArray.length + " Peserta";
+
+    const hasData = (activeList.length > 0 || historyListArray.length > 0);
+
+    btnKocok.disabled = (activeList.length === 0 || isShuffling);
+    btnDownload.disabled = (!hasData || isShuffling);
+    btnReset.disabled = (!hasData || isShuffling);
+    btnClear.disabled = (!hasData || isShuffling);
+  }
+  
+  function getBaseName(name) {
+    return name.replace(/\s+\d+$/, "").trim().toLowerCase();
+  }
+
+  btnKocok.addEventListener("click", function () {
+    if (isShuffling || activeList.length === 0) return;
+    
+    const depth = parseInt(exclusionDepthInput.value) || 0;
+    const excludedBases = new Set();
+
+    if (depth > 0 && historyListArray.length > 0) {
+      const startIdx = Math.max(0, historyListArray.length - depth);
+      for (let i = startIdx; i < historyListArray.length; i++) {
+        excludedBases.add(getBaseName(historyListArray[i]));
+      }
+    }
+    
+    const eligibleList = activeList.filter(name => !excludedBases.has(getBaseName(name)));
+    
+    if (eligibleList.length === 0) {
+      alert("PERINGATAN! Semua nama peserta aktif saat ini dikecualikan berdasarkan aturan! Silakan turunkan angka pengecualian nama.");
+      return;
+    }
+
+    isShuffling = true;
+    toggleControls(true);
+
+    const duration = 2000; 
+    const intervalTime = 60; 
+    
+    const shuffleInterval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * eligibleList.length);
+      winnerDisplay.innerText = eligibleList[randomIndex];
+    }, intervalTime);
+
+    setTimeout(() => {
+      clearInterval(shuffleInterval);
+      
+      const winnerIndex = Math.floor(Math.random() * eligibleList.length);
+      const absoluteWinner = eligibleList[winnerIndex];
+
+      winnerDisplay.innerText = "🎉 " + absoluteWinner + " 🎉";
+      
+      const originalIndex = activeList.indexOf(absoluteWinner);
+      if (originalIndex !== -1) {
+        activeList.splice(originalIndex, 1);
+      }
+      
+      historyListArray.push(absoluteWinner);
+
+      refreshTextAreaContent();
+      renderHistoryUI();
+      isShuffling = false;
+      toggleControls(false);
+      updateScanDisplay();
+
+      if (activeList.length === 0) {
+        winnerDisplay.innerText = "🥳 SEMUA NAMA TELAH KELUAR! 🥳";
+      }
+    }, duration);
+  });
+
+  function toggleControls(disabled) {
+    btnKocok.disabled = disabled;
+    btnDownload.disabled = disabled;
+    btnReset.disabled = disabled;
+    btnClear.disabled = disabled;
+    fileInput.disabled = disabled;
+    textPreview.disabled = disabled;
+    exclusionDepthInput.disabled = disabled;
+  }
+
+  btnDownload.addEventListener("click", function () {
+    let outputText = activeList.join("\n");
+    if (historyListArray.length > 0) {
+      outputText += "\n" + dividerString + "\n" + historyListArray.join("\n");
+    }
+
+    const blob = new Blob([outputText], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    
+    link.href = URL.createObjectURL(blob);
+    link.download = `update_arisan_sisa_${activeList.length}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  btnReset.addEventListener("click", function () {
+    if (confirm("Reset ulang seluruh sistem? Seluruh daftar riwayat akan dikembangkan menjadi peserta aktif.")) {
+      activeList = [...activeList, ...historyListArray];
+      historyListArray = [];
+      winnerDisplay.innerText = "SIAP DIKOCOK";
+      refreshTextAreaContent();
+      renderHistoryUI();
+      updateScanDisplay();
+    }
+  });
+
+  btnClear.addEventListener("click", function () {
+    if (confirm("Apakah Anda yakin ingin MENGHAPUS TOTAL semua data arisan dan riwayat tanpa reload halaman?")) {
+      activeList = [];
+      historyListArray = [];
+      fileInput.value = "";
+      textPreview.value = "";
+      fileCustomBtn.innerText = "Pilih File Arisan .txt";
+      winnerDisplay.innerText = "SIAP DIKOCOK";
+      exclusionDepthInput.value = "0";
+      
+      renderHistoryUI();
+      updateScanDisplay();
+    }
+  });
+});
+</script>
