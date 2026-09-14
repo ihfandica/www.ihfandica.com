@@ -239,12 +239,43 @@
   color: inherit;
   text-decoration: none;
   font-size: 0.9rem;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.cv-tg:hover { border-color: #8875F5; background: rgba(136, 117, 245, 0.1); color: #8875F5; }
+.cv-tg:hover { border-color: #8875F5; background: rgba(136, 117, 245, 0.1); color: #8875F5; transform: translateX(4px); }
 .cv-cl { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 1px solid rgba(128, 128, 128, 0.1); padding-top: 20px; }
 .cv-cli { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; font-size: 0.95rem; }
 .cv-cli:hover { color: #8875F5; }
+  
+.cv-itr-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.cv-itr-link:hover {
+  color: #8875F5;
+  text-decoration: underline;
+}  
+  
+.cv-abt {
+  transition: transform 0.25s ease, color 0.3s ease;
+}
+
+.cv-ai:hover {
+  border-color: #8875F5;
+  background: rgba(136, 117, 245, 0.05);
+}
+
+.cv-ab:hover .cv-abt {
+  color: #8875F5;
+  transform: translateX(4px);
+}
+
+.cv-ab:hover .cv-chevron {
+  color: #8875F5;
+  opacity: 1;
+}  
+  
 </style>
 
 <div class="cv-wrp">
@@ -345,7 +376,7 @@
             <div class="cv-it">
               <div class="cv-ith">
                 <div class="cv-ith-left">
-                  <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
+                  <span class="cv-icon-box"><i class="iconsax" icon-name="teacher"></i></span>
                   <h3 class="cv-itr-text">STIE Semarang, Semarang</h3>
                 </div>
                 <span class="cv-itd">2015 - 2019</span>
@@ -406,6 +437,54 @@
                 <span class="cv-itd">2003 - 2008</span>
               </div>
               <p class="cv-itc">Setara Sekolah Dasar</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+	
+    <div class="cv-ai">
+      <button class="cv-ab">
+        <span class="cv-abt">
+          <span class="cv-abi"><i class="iconsax" icon-name="award"></i></span>
+          <span>Sertifikasi &amp; Pelatihan</span>
+        </span>
+        <span class="cv-abi cv-chevron"><i class="iconsax" icon-name="chevron-down"></i></span>
+      </button>
+      <div class="cv-acont">
+        <div class="cv-ainr">
+          <div class="cv-abd cv-tl">
+        
+            <div class="cv-it">
+              <div class="cv-ith">
+                <div class="cv-ith-left">
+                  <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
+                  <h3 class="cv-itr-text">
+                    <a class="cv-itr-link" href="https://github.com/ihfandica/www.ihfandica.com/tree/tentang-up/Documents/Sertifikat" target="_blank" rel="noopener noreferrer">
+          Assosiate Data Scientist + Python - Nasional
+                    </a>
+                 </h3>
+                </div>
+                <span class="cv-itd">2026</span>
+              </div>
+              <p class="cv-itc">Digital Talent Academy</p>
+              <p class="cv-ite">Mencakup materi: Python, Math practice with Python, Pandas, Numpy, Scikit-Learn, Data Scraping, Eksplorasi Data, Data Cleansing, Data Annotation.</p>
+            </div>
+
+            <div class="cv-it">
+              <div class="cv-ith">
+                <div class="cv-ith-left">
+                  <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
+                  <h3 class="cv-itr-text">
+                    <a class="cv-itr-link" href="https://github.com/ihfandica/www.ihfandica.com/tree/tentang-up/Documents/Sertifikat" target="_blank" rel="noopener noreferrer">Data Scientist Supervisor - Nasional
+                    </a>
+                  </h3>
+                </div>
+                <span class="cv-itd">2026</span>
+              </div>
+              <p class="cv-itc">Digital Talent Academy</p>
+              <p class="cv-ite">Mencakup materi: Data Screening, Objek Data: Dasar Analisis, Konstruksi & Dokumentasi, Strategi Perencanaan Model, Penerapan Pemodelan, Evaluasi Hasil Pemodelan.</p>
             </div>
 
           </div>
@@ -542,7 +621,7 @@
     <div class="cv-ai">
       <button class="cv-ab">
         <span class="cv-abt">
-          <span class="cv-abi"><i class="iconsax" icon-name="award"></i></span>
+          <span class="cv-abi"><i class="iconsax" icon-name="star"></i></span>
           <span>Pengakuan &amp; Kontak</span>
         </span>
         <span class="cv-abi cv-chevron"><i class="iconsax" icon-name="chevron-down"></i></span>
