@@ -1,0 +1,960 @@
+<div class="diff-page-container">
+
+  <div class="diff-card-head">
+    <h2>Sistem Komparasi & Analisis Kode</h2>
+    <p>Unggah atau tempelkan dua versi kode Anda untuk melihat perbedaan baris demi baris hingga tingkat kata, melipat baris sama, menganalisis statistik, dan mengunduh file patch.</p>
+    <div class="box-nw info">Dukungan format file meliputi .txt, .js, .html, .css, .py, .json, .xml, .sql, .md, dan file teks lainnya.</div>
+  </div>
+
+  <details class="ac">
+    <summary>Lihat langkah penggunaan</summary>
+    <div class="aC">
+      <ul class="step" style="text-align: justify">
+        <li>Pilih file atau tempelkan kode versi lama pada kotak <b>"Kode Lama (Original)"</b> di sebelah kiri.</li>
+        <li>Pilih file atau tempelkan kode versi baru pada kotak <b>"Kode Baru (Modified)"</b> di sebelah kanan.</li>
+        <li>Gunakan opsi <b>Sorot Kata Berubah</b>, <b>Lipat Baris Sama</b>, atau <b>Abaikan Spasi</b> sesuai kebutuhan.</li>
+        <li>Klik tombol <b>"Bandingkan Kode"</b> untuk melihat hasil analisis.</li>
+        <li>Gunakan tombol navigasi <b>&uarr; Prev</b> dan <b>&darr; Next</b> untuk melompat antar baris perubahan.</li>
+      </ul>
+    </div>
+    <div class="box-nw warning" style="text-align: justify"><b>Tukar:</b> Membalikkan posisi antara Kode Lama dan Kode Baru.</div>
+    <div class="box-nw danger" style="text-align: justify"><b>Clear All:</b> Menghapus seluruh file dan teks pada kedua kolom input serta hasil perbandingan.</div>
+  </details>
+  <br />
+
+  <div class="diff-layout-grid">
+    <div class="diff-panel">
+      <div class="diff-form-group">
+        <label class="diff-label">1. Pilih File Kode Lama (.txt, .js, .html, dll)</label>
+        <div class="diff-file-wrapper">
+          <input type="file" id="fileInputOrig" accept=".txt,.js,.py,.html,.css,.json,.xml,.sql,.md,.java,.cpp,.c,.php" />
+          <span class="file-custom-btn" id="btnOrigLabel">Pilih File Kode Lama</span>
+        </div>
+      </div>
+
+      <div class="diff-form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label class="diff-label" style="margin-bottom: 0;">Pratinjau / Edit Kode Lama:</label>
+          <button type="button" class="diff-btn btn-secondary" id="btnClearOrig" style="padding: 4px 8px; font-size: 11px;">Bersihkan</button>
+        </div>
+        <textarea id="textOriginal" class="diff-textarea" placeholder="Atau tempelkan/ketik kode lama di sini..."></textarea>
+      </div>
+    </div>
+
+    <div class="diff-panel">
+      <div class="diff-form-group">
+        <label class="diff-label">2. Pilih File Kode Baru (.txt, .js, .html, dll)</label>
+        <div class="diff-file-wrapper">
+          <input type="file" id="fileInputMod" accept=".txt,.js,.py,.html,.css,.json,.xml,.sql,.md,.java,.cpp,.c,.php" />
+          <span class="file-custom-btn" id="btnModLabel">Pilih File Kode Baru</span>
+        </div>
+      </div>
+
+      <div class="diff-form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label class="diff-label" style="margin-bottom: 0;">Pratinjau / Edit Kode Baru:</label>
+          <button type="button" class="diff-btn btn-secondary" id="btnClearMod" style="padding: 4px 8px; font-size: 11px;">Bersihkan</button>
+        </div>
+        <textarea id="textModified" class="diff-textarea" placeholder="Atau tempelkan/ketik kode baru di sini..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="diff-scan-box" style="margin-top: 10px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+      <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <input type="checkbox" id="chkWordDiff" checked />
+          <span>Sorot Kata Berubah</span>
+        </label>
+        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <input type="checkbox" id="chkCollapseSame" />
+          <span>Lipat Baris Sama</span>
+        </label>
+        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <input type="checkbox" id="chkIgnoreSpace" checked />
+          <span>Abaikan Spasi</span>
+        </label>
+        <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <input type="checkbox" id="chkIgnoreCase" />
+          <span>Abaikan Kapital</span>
+        </label>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <button type="button" class="diff-btn btn-secondary diff-tab-btn diff-tab-active" id="btnViewSplit" style="padding: 6px 12px; font-size: 12px;">Side-by-Side</button>
+        <button type="button" class="diff-btn btn-secondary diff-tab-btn" id="btnViewUnified" style="padding: 6px 12px; font-size: 12px;">Unified</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="diff-actions" style="margin-bottom: 15px; display: flex; gap: 8px;">
+    <button type="button" class="diff-btn btn-primary btn-pulse" id="btnBandingkan" style="flex: 3;">
+      <svg class="btn-icon-art" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M16 18l6-6-6-6M8 6L2 12l6 6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <span id="lblBandingkan">Bandingkan Kode</span>
+    </button>
+    <button type="button" class="diff-btn btn-secondary" id="btnSwap" style="flex: 1;">
+      Tukar Kode
+    </button>
+  </div>
+
+  <div class="diff-scan-box" id="scanBoxResult" style="display: none; margin-bottom: 15px;">
+    <div class="scan-item">
+      <span class="scan-label">Baris Ditambahkan (+):</span>
+      <span class="scan-value status-active" id="statAdd">0 Baris</span>
+    </div>
+    <div class="scan-item">
+      <span class="scan-label">Baris Dihapus (-):</span>
+      <span class="scan-value status-done" id="statDel">0 Baris</span>
+    </div>
+    <div class="scan-item">
+      <span class="scan-label">Baris Diubah (~):</span>
+      <span class="scan-value" style="color: #e0a43b;" id="statMod">0 Baris</span>
+    </div>
+    <div class="scan-item">
+      <span class="scan-label">Tingkat Kemiripan Kode:</span>
+      <span class="scan-value status-active" id="statSim">100%</span>
+    </div>
+  </div>
+
+  <div class="diff-utility-actions" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 8px;">
+    <button type="button" class="diff-btn btn-success" id="btnDownloadPatch" disabled style="flex: 2; min-width: 180px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Simpan File Patch (.patch)
+    </button>
+    <button type="button" class="diff-btn btn-secondary" id="btnCopyDiff" disabled style="flex: 1;">
+      Salin Hasil Diff
+    </button>
+    <button type="button" class="diff-btn btn-danger" id="btnClearAll" disabled style="flex: 1;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+      Clear All
+    </button>
+  </div>
+
+  <div class="riwayat-box" id="resultWrapper" style="display: none;">
+    <div class="riwayat-head" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+      <span>Hasil Perbandingan Kode Baris demi Baris</span>
+      
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span id="diffNavCounter" style="font-size: 11px; opacity: 0.8; font-family: 'Fira Code', monospace !important;">0 / 0</span>
+        <button type="button" class="diff-btn btn-secondary" id="btnPrevDiff" style="padding: 2px 8px; font-size: 11px;" title="Perubahan Sebelumnya">&uarr; Prev</button>
+        <button type="button" class="diff-btn btn-secondary" id="btnNextDiff" style="padding: 2px 8px; font-size: 11px;" title="Perubahan Berikutnya">&darr; Next</button>
+      </div>
+    </div>
+    
+    <div id="diffOutputContainer" style="overflow-x: auto; max-height: 550px; padding: 10px;"></div>
+  </div>
+
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap');
+
+.diff-page-container {
+  font-family: var(--fontBody), sans-serif;
+  color: var(--themeC);
+  background-color: var(--themeBg);
+  padding: 20px;
+  max-width: var(--contentPage-maxWidth, 820px);
+  margin: 0 auto;
+}
+.diff-card-head {
+  text-align: justify;
+  text-justify: inter-word;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--themeBd-color);
+  padding-bottom: 15px;
+}
+.diff-card-head h2 {
+  font-family: var(--fontHead), sans-serif;
+  font-size: var(--head-H2, 1.8rem);
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--themeC);
+}
+.diff-card-head p {
+  font-size: var(--fontSize, 14px);
+  opacity: 0.8;
+  margin: 0;
+}
+.diff-layout-grid {
+  display: block;
+}
+@media screen and (min-width: 768px) {
+  .diff-layout-grid {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  .diff-panel {
+    display: table-cell;
+    vertical-align: top;
+    width: 50%;
+  }
+  .diff-panel:first-child {
+    padding-right: 15px;
+  }
+  .diff-panel:last-child {
+    padding-left: 15px;
+  }
+}
+.diff-form-group {
+  margin-bottom: 15px;
+}
+.diff-label {
+  display: block;
+  font-family: var(--fontHead), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.diff-file-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+}
+.diff-file-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+}
+.file-custom-btn {
+  display: block;
+  padding: 12px;
+  background-color: var(--themeBg-alt);
+  border: 1px dashed var(--themeBd-color);
+  border-radius: var(--contentBd-radius, 4px);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+.diff-scan-box {
+  background-color: var(--themeBg-alt);
+  border: 1px solid var(--themeBd-color);
+  border-radius: var(--contentBd-radius, 4px);
+  padding: 12px 15px;
+  margin-bottom: 15px;
+}
+.scan-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 0;
+}
+.scan-item:not(:last-child) {
+  border-bottom: 1px solid var(--themeBg-sec);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+.scan-label {
+  opacity: 0.85;
+}
+
+.scan-value {
+  font-family: 'Fira Code', monospace !important;
+  font-variant-ligatures: normal;
+  font-weight: 700;
+}
+.scan-value.status-active { color: var(--themeLink); }
+.scan-value.status-done { color: #e03b3b; }
+
+.diff-textarea {
+  width: 100%;
+  height: 180px;
+  background-color: var(--inputBg);
+  color: var(--themeC);
+  border: 1px solid var(--inputBd-color);
+  border-radius: var(--inputBd-radius, 4px);
+  padding: 10px;
+  font-family: 'Fira Code', monospace !important;
+  font-variant-ligatures: normal;
+  font-size: 11px;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.diff-actions {
+  display: flex;
+}
+.diff-btn {
+  font-family: var(--fontHead), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 12px 14px;
+  border-radius: var(--buttonBd-radius, 4px);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--tDuration) ease;
+}
+.diff-btn svg {
+  width: 15px;
+  height: 15px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--themeLink) 0%, #6e56cf 100%) !important;
+  color: #ffffff !important;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(136, 117, 245, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.btn-icon-art {
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.25));
+  stroke: #ffffff !important;
+  fill: rgba(255, 255, 255, 0.15) !important;
+  transition: transform 0.3s ease;
+}
+.btn-primary:hover:not(:disabled) .btn-icon-art {
+  transform: rotate(15deg) scale(1.15);
+}
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.95;
+  box-shadow: 0 6px 20px rgba(136, 117, 245, 0.45);
+}
+@keyframes pulseArt {
+  0% { box-shadow: 0 0 0 0 rgba(136, 117, 245, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(136, 117, 245, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(136, 117, 245, 0); }
+}
+.btn-pulse:not(:disabled) {
+  animation: pulseArt 2s infinite;
+}
+.btn-success {
+  background-color: #2da77a !important;
+  color: #ffffff !important;
+}
+.btn-secondary {
+  background-color: var(--themeBg-sec) !important;
+  color: var(--themeC) !important;
+  border: 1px solid var(--themeBd-color) !important;
+}
+.btn-danger {
+  background-color: #e03b3b !important;
+  color: #ffffff !important;
+}
+.diff-btn:disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+.riwayat-box {
+  border: 1px solid var(--themeBd-color);
+  border-radius: var(--contentBd-radius, 4px);
+  background-color: var(--themeBg);
+  overflow: hidden;
+}
+.riwayat-head {
+  background-color: var(--themeBg-alt);
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--themeBd-color);
+}
+
+.diff-table,
+.diff-table tr,
+.diff-table td {
+  font-family: 'Fira Code', monospace !important;
+  font-variant-ligatures: normal;
+}
+
+.diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.diff-table td {
+  padding: 3px 8px;
+  vertical-align: top;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.diff-num {
+  width: 35px;
+  text-align: right;
+  color: var(--themeC);
+  opacity: 0.5;
+  user-select: none;
+  background-color: var(--themeBg-alt);
+  border-right: 1px solid var(--themeBd-color);
+  font-size: 11px;
+  font-family: 'Fira Code', monospace !important;
+}
+.diff-marker {
+  width: 18px;
+  text-align: center;
+  font-weight: bold;
+  user-select: none;
+}
+.diff-row-add { background-color: rgba(45, 167, 122, 0.15); }
+.diff-row-del { background-color: rgba(224, 59, 59, 0.15); }
+.diff-row-mod { background-color: rgba(224, 164, 59, 0.15); }
+.diff-word-del {
+  background-color: rgba(224, 59, 59, 0.35);
+  text-decoration: line-through;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+.diff-word-add {
+  background-color: rgba(45, 167, 122, 0.35);
+  font-weight: bold;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.diff-row-active {
+  outline: 2px solid var(--themeLink) !important;
+  box-shadow: 0 0 8px var(--themeLink);
+}
+
+.diff-row-fold {
+  background-color: var(--themeBg-alt);
+  color: var(--themeLink);
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  padding: 6px 12px !important;
+  border-top: 1px dashed var(--themeBd-color);
+  border-bottom: 1px dashed var(--themeBd-color);
+}
+.diff-row-fold:hover {
+  background-color: var(--themeBg-sec);
+}
+
+.diff-marker-add { color: #2da77a; }
+.diff-marker-del { color: #e03b3b; }
+.diff-marker-mod { color: #e0a43b; }
+
+.diff-tab-active {
+  background-color: var(--themeLink) !important;
+  color: #ffffff !important;
+  border-color: var(--themeLink) !important;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const fileInputOrig = document.getElementById("fileInputOrig");
+  const fileInputMod = document.getElementById("fileInputMod");
+  const btnOrigLabel = document.getElementById("btnOrigLabel");
+  const btnModLabel = document.getElementById("btnModLabel");
+  const textOriginal = document.getElementById("textOriginal");
+  const textModified = document.getElementById("textModified");
+  const btnClearOrig = document.getElementById("btnClearOrig");
+  const btnClearMod = document.getElementById("btnClearMod");
+  const chkWordDiff = document.getElementById("chkWordDiff");
+  const chkCollapseSame = document.getElementById("chkCollapseSame");
+  const chkIgnoreSpace = document.getElementById("chkIgnoreSpace");
+  const chkIgnoreCase = document.getElementById("chkIgnoreCase");
+  const btnViewSplit = document.getElementById("btnViewSplit");
+  const btnViewUnified = document.getElementById("btnViewUnified");
+  const btnBandingkan = document.getElementById("btnBandingkan");
+  const lblBandingkan = document.getElementById("lblBandingkan");
+  const btnSwap = document.getElementById("btnSwap");
+  const btnDownloadPatch = document.getElementById("btnDownloadPatch");
+  const btnCopyDiff = document.getElementById("btnCopyDiff");
+  const btnClearAll = document.getElementById("btnClearAll");
+  const scanBoxResult = document.getElementById("scanBoxResult");
+  const resultWrapper = document.getElementById("resultWrapper");
+  const diffOutputContainer = document.getElementById("diffOutputContainer");
+  const btnPrevDiff = document.getElementById("btnPrevDiff");
+  const btnNextDiff = document.getElementById("btnNextDiff");
+  const diffNavCounter = document.getElementById("diffNavCounter");
+
+  let currentViewMode = "split";
+  let lastDiffData = null;
+  let diffRowsList = [];
+  let currentDiffNavIndex = -1;
+
+  fileInputOrig.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    btnOrigLabel.innerText = file.name;
+    const reader = new FileReader();
+    reader.onload = function (evt) {
+      textOriginal.value = evt.target.result;
+      updateControlStates();
+    };
+    reader.readAsText(file);
+  });
+
+  fileInputMod.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    btnModLabel.innerText = file.name;
+    const reader = new FileReader();
+    reader.onload = function (evt) {
+      textModified.value = evt.target.result;
+      updateControlStates();
+    };
+    reader.readAsText(file);
+  });
+
+  textOriginal.addEventListener("input", updateControlStates);
+  textModified.addEventListener("input", updateControlStates);
+
+  btnClearOrig.addEventListener("click", function () {
+    textOriginal.value = "";
+    fileInputOrig.value = "";
+    btnOrigLabel.innerText = "Pilih File Kode Lama";
+    updateControlStates();
+  });
+
+  btnClearMod.addEventListener("click", function () {
+    textModified.value = "";
+    fileInputMod.value = "";
+    btnModLabel.innerText = "Pilih File Kode Baru";
+    updateControlStates();
+  });
+
+  btnClearAll.addEventListener("click", function () {
+    textOriginal.value = "";
+    textModified.value = "";
+    fileInputOrig.value = "";
+    fileInputMod.value = "";
+    btnOrigLabel.innerText = "Pilih File Kode Lama";
+    btnModLabel.innerText = "Pilih File Kode Baru";
+    scanBoxResult.style.display = "none";
+    resultWrapper.style.display = "none";
+    diffOutputContainer.innerHTML = "";
+    lastDiffData = null;
+    diffRowsList = [];
+    currentDiffNavIndex = -1;
+    diffNavCounter.innerText = "0 / 0";
+    updateControlStates();
+  });
+
+  btnSwap.addEventListener("click", function () {
+    const tempText = textOriginal.value;
+    textOriginal.value = textModified.value;
+    textModified.value = tempText;
+
+    const tempLabel = btnOrigLabel.innerText;
+    btnOrigLabel.innerText = btnModLabel.innerText;
+    btnModLabel.innerText = tempLabel;
+
+    updateControlStates();
+    if (resultWrapper.style.display !== "none") {
+      triggerDiffExecution();
+    }
+  });
+
+  btnViewSplit.addEventListener("click", function () {
+    btnViewSplit.classList.add("diff-tab-active");
+    btnViewUnified.classList.remove("diff-tab-active");
+    currentViewMode = "split";
+    if (lastDiffData) renderDiffOutput(lastDiffData);
+  });
+
+  btnViewUnified.addEventListener("click", function () {
+    btnViewUnified.classList.add("diff-tab-active");
+    btnViewSplit.classList.remove("diff-tab-active");
+    currentViewMode = "unified";
+    if (lastDiffData) renderDiffOutput(lastDiffData);
+  });
+
+  chkCollapseSame.addEventListener("change", function () {
+    if (lastDiffData) renderDiffOutput(lastDiffData);
+  });
+  chkWordDiff.addEventListener("change", function () {
+    if (lastDiffData) renderDiffOutput(lastDiffData);
+  });
+
+  btnBandingkan.addEventListener("click", triggerDiffExecution);
+
+  function triggerDiffExecution() {
+    lblBandingkan.innerText = "Memproses...";
+    btnBandingkan.disabled = true;
+    setTimeout(() => {
+      executeDiff();
+      lblBandingkan.innerText = "Bandingkan Kode";
+      btnBandingkan.disabled = false;
+    }, 50);
+  }
+
+  function updateControlStates() {
+    const hasData = textOriginal.value.length > 0 || textModified.value.length > 0;
+    btnDownloadPatch.disabled = !hasData;
+    btnCopyDiff.disabled = !hasData;
+    btnClearAll.disabled = !hasData;
+  }
+
+  function executeDiff() {
+    const text1 = textOriginal.value;
+    const text2 = textModified.value;
+
+    const lines1 = text1.split(/\r?\n/);
+    const lines2 = text2.split(/\r?\n/);
+
+    const ignoreSpace = chkIgnoreSpace.checked;
+    const ignoreCase = chkIgnoreCase.checked;
+
+    function prep(s) {
+      let str = s || "";
+      if (ignoreSpace) str = str.trim().replace(/\s+/g, " ");
+      if (ignoreCase) str = str.toLowerCase();
+      return str;
+    }
+
+    const n = lines1.length;
+    const m = lines2.length;
+
+    const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+    for (let i = 1; i <= n; i++) {
+      for (let j = 1; j <= m; j++) {
+        if (prep(lines1[i - 1]) === prep(lines2[j - 1])) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+
+    let i = n, j = m;
+    const rawDiff = [];
+    while (i > 0 || j > 0) {
+      if (i > 0 && j > 0 && prep(lines1[i - 1]) === prep(lines2[j - 1])) {
+        rawDiff.push({ type: "same", line1: lines1[i - 1], line2: lines2[j - 1], idx1: i, idx2: j });
+        i--; j--;
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+        rawDiff.push({ type: "add", line2: lines2[j - 1], idx2: j });
+        j--;
+      } else if (i > 0 && (j === 0 || dp[i][j - 1] < dp[i - 1][j])) {
+        rawDiff.push({ type: "del", line1: lines1[i - 1], idx1: i });
+        i--;
+      }
+    }
+    rawDiff.reverse();
+
+    const diff = [];
+    let idx = 0;
+    while (idx < rawDiff.length) {
+      if (
+        rawDiff[idx].type === "del" &&
+        idx + 1 < rawDiff.length &&
+        rawDiff[idx + 1].type === "add"
+      ) {
+        diff.push({
+          type: "mod",
+          line1: rawDiff[idx].line1,
+          idx1: rawDiff[idx].idx1,
+          line2: rawDiff[idx + 1].line2,
+          idx2: rawDiff[idx + 1].idx2
+        });
+        idx += 2;
+      } else {
+        diff.push(rawDiff[idx]);
+        idx++;
+      }
+    }
+
+    lastDiffData = diff;
+
+    let adds = 0, dels = 0, mods = 0;
+    diff.forEach(item => {
+      if (item.type === "add") adds++;
+      else if (item.type === "del") dels++;
+      else if (item.type === "mod") mods++;
+    });
+
+    const totalLines = Math.max(lines1.length, lines2.length);
+    const totalChanges = adds + dels + mods;
+    const simPercent = totalLines > 0 ? Math.max(0, Math.round(((totalLines - totalChanges) / totalLines) * 100)) : 100;
+
+    document.getElementById("statAdd").innerText = adds + " Baris";
+    document.getElementById("statDel").innerText = dels + " Baris";
+    document.getElementById("statMod").innerText = mods + " Baris";
+    document.getElementById("statSim").innerText = simPercent + "%";
+
+    scanBoxResult.style.display = "block";
+    resultWrapper.style.display = "block";
+
+    renderDiffOutput(diff);
+  }
+
+  function computeWordDiff(str1, str2) {
+    const tokenize = s => s.match(/[\w]+|[^\w\s]+|\s+/g) || [];
+    const t1 = tokenize(str1 || "");
+    const t2 = tokenize(str2 || "");
+
+    const n = t1.length, m = t2.length;
+    const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+
+    for (let i = 1; i <= n; i++) {
+      for (let j = 1; j <= m; j++) {
+        if (t1[i - 1] === t2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+
+    let i = n, j = m;
+    const res1 = [], res2 = [];
+
+    while (i > 0 || j > 0) {
+      if (i > 0 && j > 0 && t1[i - 1] === t2[j - 1]) {
+        res1.push(esc(t1[i - 1]));
+        res2.push(esc(t2[j - 1]));
+        i--; j--;
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+        res2.push(`<span class="diff-word-add">${esc(t2[j - 1])}</span>`);
+        j--;
+      } else if (i > 0 && (j === 0 || dp[i][j - 1] < dp[i - 1][j])) {
+        res1.push(`<span class="diff-word-del">${esc(t1[i - 1])}</span>`);
+        i--;
+      }
+    }
+
+    return {
+      html1: res1.reverse().join(""),
+      html2: res2.reverse().join("")
+    };
+  }
+
+  function esc(s) {
+    if (!s && s !== "") return "";
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function renderDiffOutput(diff) {
+    let html = '<table class="diff-table">';
+    const doCollapse = chkCollapseSame.checked;
+    const doWord = chkWordDiff.checked;
+
+    let idx = 0;
+    while (idx < diff.length) {
+      if (doCollapse && diff[idx].type === "same") {
+        let sameStart = idx;
+        while (idx < diff.length && diff[idx].type === "same") {
+          idx++;
+        }
+        let sameCount = idx - sameStart;
+
+        if (sameCount > 3) {
+          html += renderRowHTML(diff[sameStart], doWord);
+          html += `<tr class="diff-row-fold" data-start="${sameStart + 1}" data-end="${idx - 1}">
+            <td colspan="${currentViewMode === 'split' ? 6 : 4}">
+              &#8597; ${sameCount - 2} baris sama dilipat (klik untuk membuka)
+            </td>
+          </tr>`;
+          html += renderRowHTML(diff[idx - 1], doWord);
+          continue;
+        } else {
+          for (let k = sameStart; k < idx; k++) {
+            html += renderRowHTML(diff[k], doWord);
+          }
+          continue;
+        }
+      }
+
+      html += renderRowHTML(diff[idx], doWord);
+      idx++;
+    }
+
+    html += '</table>';
+    diffOutputContainer.innerHTML = html;
+
+    diffOutputContainer.querySelectorAll(".diff-row-fold").forEach(foldRow => {
+      foldRow.addEventListener("click", function () {
+        const start = parseInt(this.getAttribute("data-start"), 10);
+        const end = parseInt(this.getAttribute("data-end"), 10);
+        let unhiddenHTML = "";
+        for (let k = start; k < end; k++) {
+          unhiddenHTML += renderRowHTML(diff[k], doWord);
+        }
+        this.insertAdjacentHTML("afterend", unhiddenHTML);
+        this.remove();
+        updateDiffNavList();
+      });
+    });
+
+    updateDiffNavList();
+  }
+
+  function renderRowHTML(item, doWord) {
+    if (currentViewMode === "split") {
+      if (item.type === "same") {
+        return `<tr>
+          <td class="diff-num">${item.idx1}</td>
+          <td class="diff-marker"></td>
+          <td style="width:48%;">${esc(item.line1)}</td>
+          <td class="diff-num">${item.idx2}</td>
+          <td class="diff-marker"></td>
+          <td style="width:48%;">${esc(item.line2)}</td>
+        </tr>`;
+      } else if (item.type === "mod") {
+        let content1 = esc(item.line1);
+        let content2 = esc(item.line2);
+        if (doWord) {
+          const w = computeWordDiff(item.line1, item.line2);
+          content1 = w.html1;
+          content2 = w.html2;
+        }
+        return `<tr class="diff-row-mod diff-change-row">
+          <td class="diff-num">${item.idx1}</td>
+          <td class="diff-marker diff-marker-mod">~</td>
+          <td style="width:48%;">${content1}</td>
+          <td class="diff-num">${item.idx2}</td>
+          <td class="diff-marker diff-marker-mod">~</td>
+          <td style="width:48%;">${content2}</td>
+        </tr>`;
+      } else if (item.type === "del") {
+        return `<tr class="diff-row-del diff-change-row">
+          <td class="diff-num">${item.idx1}</td>
+          <td class="diff-marker diff-marker-del">-</td>
+          <td style="width:48%;">${esc(item.line1)}</td>
+          <td class="diff-num"></td>
+          <td class="diff-marker"></td>
+          <td style="width:48%;"></td>
+        </tr>`;
+      } else if (item.type === "add") {
+        return `<tr class="diff-row-add diff-change-row">
+          <td class="diff-num"></td>
+          <td class="diff-marker"></td>
+          <td style="width:48%;"></td>
+          <td class="diff-num">${item.idx2}</td>
+          <td class="diff-marker diff-marker-add">+</td>
+          <td style="width:48%;">${esc(item.line2)}</td>
+        </tr>`;
+      }
+    } else {
+      if (item.type === "same") {
+        return `<tr>
+          <td class="diff-num">${item.idx1}</td>
+          <td class="diff-num">${item.idx2}</td>
+          <td class="diff-marker"></td>
+          <td>${esc(item.line1)}</td>
+        </tr>`;
+      } else if (item.type === "mod") {
+        let content1 = esc(item.line1);
+        let content2 = esc(item.line2);
+        if (doWord) {
+          const w = computeWordDiff(item.line1, item.line2);
+          content1 = w.html1;
+          content2 = w.html2;
+        }
+        return `<tr class="diff-row-del diff-change-row">
+          <td class="diff-num">${item.idx1}</td>
+          <td class="diff-num"></td>
+          <td class="diff-marker diff-marker-del">-</td>
+          <td>${content1}</td>
+        </tr>
+        <tr class="diff-row-add diff-change-row">
+          <td class="diff-num"></td>
+          <td class="diff-num">${item.idx2}</td>
+          <td class="diff-marker diff-marker-add">+</td>
+          <td>${content2}</td>
+        </tr>`;
+      } else if (item.type === "del") {
+        return `<tr class="diff-row-del diff-change-row">
+          <td class="diff-num">${item.idx1}</td>
+          <td class="diff-num"></td>
+          <td class="diff-marker diff-marker-del">-</td>
+          <td>${esc(item.line1)}</td>
+        </tr>`;
+      } else if (item.type === "add") {
+        return `<tr class="diff-row-add diff-change-row">
+          <td class="diff-num"></td>
+          <td class="diff-num">${item.idx2}</td>
+          <td class="diff-marker diff-marker-add">+</td>
+          <td>${esc(item.line2)}</td>
+        </tr>`;
+      }
+    }
+  }
+
+  function updateDiffNavList() {
+    diffRowsList = Array.from(diffOutputContainer.querySelectorAll(".diff-change-row"));
+    currentDiffNavIndex = -1;
+    if (diffRowsList.length > 0) {
+      diffNavCounter.innerText = `0 / ${diffRowsList.length}`;
+    } else {
+      diffNavCounter.innerText = "0 / 0";
+    }
+  }
+
+  btnNextDiff.addEventListener("click", function () {
+    if (diffRowsList.length === 0) return;
+    if (currentDiffNavIndex >= 0 && diffRowsList[currentDiffNavIndex]) {
+      diffRowsList[currentDiffNavIndex].classList.remove("diff-row-active");
+    }
+    currentDiffNavIndex = (currentDiffNavIndex + 1) % diffRowsList.length;
+    const targetRow = diffRowsList[currentDiffNavIndex];
+    targetRow.classList.add("diff-row-active");
+    targetRow.scrollIntoView({ behavior: "smooth", block: "center" });
+    diffNavCounter.innerText = `${currentDiffNavIndex + 1} / ${diffRowsList.length}`;
+  });
+
+  btnPrevDiff.addEventListener("click", function () {
+    if (diffRowsList.length === 0) return;
+    if (currentDiffNavIndex >= 0 && diffRowsList[currentDiffNavIndex]) {
+      diffRowsList[currentDiffNavIndex].classList.remove("diff-row-active");
+    }
+    currentDiffNavIndex = (currentDiffNavIndex - 1 + diffRowsList.length) % diffRowsList.length;
+    const targetRow = diffRowsList[currentDiffNavIndex];
+    targetRow.classList.add("diff-row-active");
+    targetRow.scrollIntoView({ behavior: "smooth", block: "center" });
+    diffNavCounter.innerText = `${currentDiffNavIndex + 1} / ${diffRowsList.length}`;
+  });
+
+  btnDownloadPatch.addEventListener("click", function () {
+    if (!lastDiffData) return;
+
+    let patchContent = "--- KodeLama.txt\n+++ KodeBaru.txt\n";
+    lastDiffData.forEach(item => {
+      if (item.type === "same") {
+        patchContent += "  " + (item.line1 || "") + "\n";
+      } else if (item.type === "del") {
+        patchContent += "- " + (item.line1 || "") + "\n";
+      } else if (item.type === "add") {
+        patchContent += "+ " + (item.line2 || "") + "\n";
+      } else if (item.type === "mod") {
+        patchContent += "- " + (item.line1 || "") + "\n";
+        patchContent += "+ " + (item.line2 || "") + "\n";
+      }
+    });
+
+    const blob = new Blob([patchContent], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "perubahan_kode.patch";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  btnCopyDiff.addEventListener("click", function () {
+    const table = diffOutputContainer.querySelector("table");
+    if (!table) return;
+    navigator.clipboard.writeText(table.innerText).then(() => {
+      const origText = btnCopyDiff.innerText;
+      btnCopyDiff.innerText = "Tersalin!";
+      setTimeout(() => { btnCopyDiff.innerText = origText; }, 2000);
+    });
+  });
+});
+</script>
