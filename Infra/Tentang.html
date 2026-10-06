@@ -1,4 +1,4 @@
-<link href="https://iconsax.gitlab.io/i/icons.css" rel="stylesheet"></link>
+<link href="https://iconsax.gitlab.io/i/icons.css" rel="stylesheet" />
 
 <div class="audioPlayer">
   <div class="audioContainer">
@@ -16,6 +16,7 @@
   font-family: inherit;
   color: inherit;
 }
+
 .cv-h {
   display: flex;
   flex-direction: column;
@@ -26,9 +27,14 @@
   border-radius: 24px;
   border: 1px solid rgba(128, 128, 128, 0.15);
 }
+
 @media (min-width: 768px) {
-  .cv-h { flex-direction: row; text-align: left; }
+  .cv-h {
+    flex-direction: row;
+    text-align: left;
+  }
 }
+
 .cv-p-img {
   width: 140px !important;
   height: 140px !important;
@@ -44,15 +50,27 @@
   box-sizing: border-box !important;
   aspect-ratio: 1 / 1 !important;
 }
-.cv-n { font-size: 2rem; font-weight: 800; margin: 0 0 0.5rem 0; }
-.cv-b { 
-  font-size: 1rem; 
-  opacity: 0.8; 
-  line-height: 1.7; 
-  text-align: justify; 
+
+.cv-n {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+}
+
+.cv-b {
+  font-size: 1rem;
+  opacity: 0.8;
+  line-height: 1.7;
+  text-align: justify;
   margin: 0;
 }
-.cv-ac { display: flex; flex-direction: column; gap: 1rem; }
+
+.cv-ac {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .cv-ai {
   background: rgba(128, 128, 128, 0.03);
   border: 1px solid rgba(128, 128, 128, 0.1);
@@ -60,6 +78,12 @@
   overflow: hidden;
   transition: all 0.3s ease;
 }
+
+.cv-ai:hover {
+  border-color: #8875F5;
+  background: rgba(136, 117, 245, 0.05);
+}
+
 .cv-ab {
   width: 100%;
   display: flex;
@@ -74,33 +98,81 @@
   cursor: pointer;
   font-family: inherit;
 }
-.cv-abt { display: flex; align-items: center; gap: 12px; transition: color 0.3s; }
-.cv-abi { 
-  width: 24px; 
-  height: 24px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  color: inherit; 
-  flex-shrink: 0; 
+
+.cv-ab:hover .cv-abt {
+  color: #8875F5;
+  transform: translateX(4px);
+}
+
+.cv-ab:hover .cv-chevron {
+  color: #8875F5;
+  opacity: 1;
+}
+
+.cv-abt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.25s ease, color 0.3s ease;
+}
+
+.cv-abi {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  flex-shrink: 0;
 }
 
 .iconsax {
   font-size: 24px;
   color: inherit;
 }
+
 .cv-icon-box .iconsax {
   font-size: 20px;
 }
 
-.cv-chevron { transition: transform 0.4s ease; opacity: 0.5; }
-.cv-ai.active { border-color: #8875F5; background: rgba(136, 117, 245, 0.04); }
-.cv-ai.active .cv-abt, .cv-ai.active .cv-chevron { color: #8875F5; opacity: 1; }
-.cv-ai.active .cv-chevron { transform: rotate(180deg); }
-.cv-acont { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-.cv-ai.active .cv-acont { grid-template-rows: 1fr; }
-.cv-ainr { overflow: hidden; }
-.cv-abd { padding: 0 1.5rem 1.5rem; }
+.cv-chevron {
+  transition: transform 0.4s ease;
+  opacity: 0.5;
+}
+
+.cv-ai.active {
+  border-color: #8875F5;
+  background: rgba(136, 117, 245, 0.04);
+}
+
+.cv-ai.active .cv-abt,
+.cv-ai.active .cv-chevron {
+  color: #8875F5;
+  opacity: 1;
+}
+
+.cv-ai.active .cv-chevron {
+  transform: rotate(180deg);
+}
+
+.cv-acont {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cv-ai.active .cv-acont {
+  grid-template-rows: 1fr;
+}
+
+.cv-ainr {
+  overflow: hidden;
+}
+
+.cv-abd {
+  padding: 0 1.5rem 1.5rem;
+}
+
 .cv-tl {
   display: flex;
   flex-direction: column;
@@ -109,7 +181,11 @@
   border-left: 2px solid rgba(128, 128, 128, 0.15);
   margin-left: 10px;
 }
-.cv-it { position: relative; }
+
+.cv-it {
+  position: relative;
+}
+
 .cv-it::before {
   content: "";
   position: absolute;
@@ -123,17 +199,21 @@
   transition: border-color 0.3s;
 }
 
+.cv-ai.active .cv-it::before {
+  border-color: #8875F5;
+}
+
 .cv-it .spoiler-nw {
-  margin-left: 32px !important; 
+  margin-left: 32px !important;
   margin-right: 12px !important;
   margin-top: 8px !important;
-  border: none !important;      
+  border: none !important;
 }
 
 .cv-it .spoiler-nw summary {
-  font-size: 0.82rem !important; 
-  font-weight: 500 !important;   
-  opacity: 0.75;                
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  opacity: 0.75;
   cursor: pointer;
   transition: all 0.25s ease;
   padding: 6px 12px !important;
@@ -141,27 +221,30 @@
 
 .cv-it .spoiler-nw summary:hover {
   opacity: 1;
-  color: #8875F5;         
+  color: #8875F5;
 }
 
 .cv-it .spoiler-isi {
   padding-top: 8px !important;
 }
+
 .cv-it .spoiler-isi .cv-cs-group {
-  margin-left: 0 !important; 
+  margin-left: 0 !important;
 }
-.cv-ai.active .cv-it::before { border-color: #8875F5; }
-.cv-ith { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
+
+.cv-ith {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
+
 .cv-ith-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .cv-icon-box {
   display: flex;
   align-items: center;
@@ -170,6 +253,7 @@
   height: 22px;
   flex-shrink: 0;
 }
+
 .cv-itr-text {
   font-weight: 600 !important;
   font-size: 1.05rem !important;
@@ -178,6 +262,7 @@
   line-height: 1 !important;
   display: block !important;
 }
+
 .cv-itd {
   font-size: 0.75rem;
   padding: 4px 10px;
@@ -187,8 +272,22 @@
   opacity: 0.8;
   line-height: 1;
 }
-.cv-itc { font-size: 0.9rem; opacity: 0.7; margin: 6px 0 0 32px !important; padding: 0 !important; line-height: 1.5; }
-.cv-ite { font-size: 0.9rem; opacity: 0.8; margin: 8px 0 0 32px !important; padding: 0 !important; line-height: 1.6; }
+
+.cv-itc {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin: 6px 0 0 32px !important;
+  padding: 0 !important;
+  line-height: 1.5;
+}
+
+.cv-ite {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 8px 0 0 32px !important;
+  padding: 0 !important;
+  line-height: 1.6;
+}
 
 .cv-cs-group {
   display: flex;
@@ -196,6 +295,7 @@
   gap: 10px;
   margin: 12px 0 0 32px;
 }
+
 .cv-cs-item {
   display: flex;
   align-items: center;
@@ -209,17 +309,20 @@
   font-size: 0.88rem;
   transition: all 0.25s ease;
 }
+
 .cv-cs-item:hover {
   border-color: #8875F5;
   background: rgba(136, 117, 245, 0.08);
   color: #8875F5;
   transform: translateX(4px);
 }
+
 .cv-cs-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .cv-cs-icon {
   color: #8875F5;
   font-size: 18px;
@@ -227,7 +330,12 @@
   align-items: center;
 }
 
-.cv-ts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.cv-ts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
 .cv-tg {
   display: flex;
   align-items: center;
@@ -241,11 +349,36 @@
   font-size: 0.9rem;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.cv-tg:hover { border-color: #8875F5; background: rgba(136, 117, 245, 0.1); color: #8875F5; transform: translateX(4px); }
-.cv-cl { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; border-top: 1px solid rgba(128, 128, 128, 0.1); padding-top: 20px; }
-.cv-cli { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; font-size: 0.95rem; }
-.cv-cli:hover { color: #8875F5; }
-  
+
+.cv-tg:hover {
+  border-color: #8875F5;
+  background: rgba(136, 117, 245, 0.1);
+  color: #8875F5;
+  transform: translateX(4px);
+}
+
+.cv-cl {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  border-top: 1px solid rgba(128, 128, 128, 0.1);
+  padding-top: 20px;
+}
+
+.cv-cli {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.95rem;
+}
+
+.cv-cli:hover {
+  color: #8875F5;
+}
+
 .cv-itr-link {
   color: inherit;
   text-decoration: none;
@@ -255,27 +388,38 @@
 .cv-itr-link:hover {
   color: #8875F5;
   text-decoration: underline;
-}  
-  
-.cv-abt {
-  transition: transform 0.25s ease, color 0.3s ease;
 }
 
-.cv-ai:hover {
-  border-color: #8875F5;
-  background: rgba(136, 117, 245, 0.05);
+.cv-it-extra {
+  display: none;
 }
 
-.cv-ab:hover .cv-abt {
+.cv-tl.show-all .cv-it-extra {
+  display: block;
+}
+
+.cv-btn-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  margin-top: 15px;
+  background: rgba(136, 117, 245, 0.1);
+  border: 1px solid rgba(136, 117, 245, 0.3);
+  border-radius: 12px;
   color: #8875F5;
-  transform: translateX(4px);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.cv-ab:hover .cv-chevron {
-  color: #8875F5;
-  opacity: 1;
-}  
-  
+.cv-btn-more:hover {
+  background: rgba(136, 117, 245, 0.2);
+  transform: translateY(-2px);
+}
 </style>
 
 <div class="cv-wrp">
@@ -288,7 +432,6 @@
   </div>
 
   <div class="cv-ac">
-    
     <div class="cv-ai active">
       <button class="cv-ab">
         <span class="cv-abt">
@@ -300,7 +443,6 @@
       <div class="cv-acont">
         <div class="cv-ainr">
           <div class="cv-abd cv-tl">
-            
             <div class="cv-it">
               <div class="cv-ith">
                 <div class="cv-ith-left">
@@ -311,7 +453,7 @@
               </div>
               <p class="cv-itc">PT Pengangguran Banyak Acara</p>
             </div>
-            
+
             <div class="cv-it">
               <div class="cv-ith">
                 <div class="cv-ith-left">
@@ -355,7 +497,6 @@
               </div>
               <p class="cv-itc">Restoran Bakso Mbak Ris</p>
             </div>
-
           </div>
         </div>
       </div>
@@ -372,7 +513,6 @@
       <div class="cv-acont">
         <div class="cv-ainr">
           <div class="cv-abd cv-tl">
-            
             <div class="cv-it">
               <div class="cv-ith">
                 <div class="cv-ith-left">
@@ -438,12 +578,11 @@
               </div>
               <p class="cv-itc">Setara Sekolah Dasar</p>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-	
+
     <div class="cv-ai">
       <button class="cv-ab">
         <span class="cv-abt">
@@ -454,17 +593,16 @@
       </button>
       <div class="cv-acont">
         <div class="cv-ainr">
-          <div class="cv-abd cv-tl">
-        
+          <div class="cv-abd cv-tl" id="cert-timeline">
             <div class="cv-it">
               <div class="cv-ith">
                 <div class="cv-ith-left">
                   <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
                   <h3 class="cv-itr-text">
-                    <a class="cv-itr-link" href="https://github.com/ihfandica/www.ihfandica.com/tree/tentang-up/Documents/Sertifikat" target="_blank" rel="noopener noreferrer">
-          Assosiate Data Scientist + Python - Nasional
+                    <a class="cv-itr-link" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Sertifikat/Sertifikat_IHFANDI%20CAHYO%20ARYANTO_Associate%20Data%20Scientist%20%2B%20Python%20-%20Nasional.pdf" target="_blank" rel="noopener noreferrer">
+                      Associate Data Scientist + Python - Nasional
                     </a>
-                 </h3>
+                  </h3>
                 </div>
                 <span class="cv-itd">2026</span>
               </div>
@@ -477,16 +615,65 @@
                 <div class="cv-ith-left">
                   <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
                   <h3 class="cv-itr-text">
-                    <a class="cv-itr-link" href="https://github.com/ihfandica/www.ihfandica.com/tree/tentang-up/Documents/Sertifikat" target="_blank" rel="noopener noreferrer">Data Scientist Supervisor - Nasional
+                    <a class="cv-itr-link" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Sertifikat/Sertifikat_IHFANDI%20CAHYO%20ARYANTO_Data%20Scientist%20Supervisor%20-%20Nasional.pdf" target="_blank" rel="noopener noreferrer">
+                      Data Scientist Supervisor - Nasional
                     </a>
                   </h3>
                 </div>
                 <span class="cv-itd">2026</span>
               </div>
               <p class="cv-itc">Digital Talent Academy</p>
-              <p class="cv-ite">Mencakup materi: Data Screening, Objek Data: Dasar Analisis, Konstruksi & Dokumentasi, Strategi Perencanaan Model, Penerapan Pemodelan, Evaluasi Hasil Pemodelan.</p>
+              <p class="cv-ite">Mencakup materi: Data Screening, Objek Data: Dasar Analisis, Konstruksi &amp; Dokumentasi, Strategi Perencanaan Model, Penerapan Pemodelan, Evaluasi Hasil Pemodelan.</p>
             </div>
 
+            <div class="cv-it">
+              <div class="cv-ith">
+                <div class="cv-ith-left">
+                  <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
+                  <h3 class="cv-itr-text">
+                    <a class="cv-itr-link" href="#" target="_blank" rel="noopener noreferrer">
+                      Judul Sertifikat Ketiga
+                    </a>
+                  </h3>
+                </div>
+                <span class="cv-itd">2026</span>
+              </div>
+              <p class="cv-itc">Digital Talent Academy</p>
+              <p class="cv-ite">Mencakup materi: Rincian materi pelatihan singkat.</p>
+            </div>
+
+            <div class="cv-it cv-it-extra">
+              <div class="cv-ith">
+                <div class="cv-ith-left">
+                  <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
+                  <h3 class="cv-itr-text">
+                    <a class="cv-itr-link" href="#" target="_blank" rel="noopener noreferrer">Judul Sertifikat Keempat</a>
+                  </h3>
+                </div>
+                <span class="cv-itd">2025</span>
+              </div>
+              <p class="cv-itc">Digital Talent Academy</p>
+              <p class="cv-ite">Mencakup materi: Rincian materi pelatihan.</p>
+            </div>
+
+            <div class="cv-it cv-it-extra">
+              <div class="cv-ith">
+                <div class="cv-ith-left">
+                  <span class="cv-icon-box"><i class="iconsax" icon-name="trophy"></i></span>
+                  <h3 class="cv-itr-text">
+                    <a class="cv-itr-link" href="#" target="_blank" rel="noopener noreferrer">Judul Sertifikat Kelima</a>
+                  </h3>
+                </div>
+                <span class="cv-itd">2025</span>
+              </div>
+              <p class="cv-itc">Digital Talent Academy</p>
+              <p class="cv-ite">Mencakup materi: Rincian materi pelatihan.</p>
+            </div>
+
+            <button class="cv-btn-more" id="btn-toggle-cert" onclick="toggleCertificates()">
+              <span>Lihat Semua Sertifikat</span>
+              <i class="iconsax" icon-name="arrow-down-1"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -503,7 +690,6 @@
       <div class="cv-acont">
         <div class="cv-ainr">
           <div class="cv-abd cv-tl">
-            
             <div class="cv-it">
               <div class="cv-ith">
                 <div class="cv-ith-left">
@@ -513,12 +699,11 @@
                 <span class="cv-itd">2025 - 2026</span>
               </div>
               <p class="cv-ite">Mengerjakan proyek automasi laporan akuntansi, pemasaran dan perpajakan berbasis VBA (Visual Basic for Applications) serta Python. Dari data mentah hingga menjadi laporan dan perpajakan.</p>
-              
+
               <details class="spoiler-nw">
                 <summary>Klik untuk melihat konten studi kasus</summary>
                 <div class="spoiler-isi">
                   <div class="cv-cs-group">
-                    
                     <a class="cv-cs-item" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Portofolio/Portofolio_Automasi_AR_Orderan.md" target="_blank" rel="noopener noreferrer">
                       <div class="cv-cs-left">
                         <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
@@ -526,7 +711,7 @@
                       </div>
                       <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
                     </a>
-                    
+
                     <a class="cv-cs-item" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Portofolio/Portofolio_Ambil_AR.md" target="_blank" rel="noopener noreferrer">
                       <div class="cv-cs-left">
                         <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
@@ -542,7 +727,7 @@
                       </div>
                       <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
                     </a>
-                    
+
                     <a class="cv-cs-item" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Portofolio/Portofolio_Rekonsiliasi_PPN_Accurate_Coretax.md" target="_blank" rel="noopener noreferrer">
                       <div class="cv-cs-left">
                         <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
@@ -550,7 +735,7 @@
                       </div>
                       <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
                     </a>
-                    
+
                     <a class="cv-cs-item" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Portofolio/Portofolio_Ekstrak_Pdf_Shell.md" target="_blank" rel="noopener noreferrer">
                       <div class="cv-cs-left">
                         <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
@@ -558,7 +743,7 @@
                       </div>
                       <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
                     </a>
-                    
+
                     <a class="cv-cs-item" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Portofolio/Portofolio_Bot_AR_Telegram.md" target="_blank" rel="noopener noreferrer">
                       <div class="cv-cs-left">
                         <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
@@ -566,15 +751,14 @@
                       </div>
                       <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
                     </a>
-                    
+
                     <a class="cv-cs-item" href="https://github.com/ihfandica/www.ihfandica.com/blob/main/Documents/Portofolio/Portofolio_Pengiriman_Surel_Klaim.md" target="_blank" rel="noopener noreferrer">
                       <div class="cv-cs-left">
                         <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
                         <span><strong>Studi kasus:</strong> Mengirim Surel Klaim, Satu Surel Satu Lampiran</span>
                       </div>
                       <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
-                    </a>  
-
+                    </a>
                   </div>
                 </div>
               </details>
@@ -589,6 +773,29 @@
                 <span class="cv-itd">2016 - 2024</span>
               </div>
               <p class="cv-ite">Memegang tanggung jawab untuk postingan media sosial di Kecap Borobudur yang melingkupi konten serta administrasi di dalam akun tersebut.</p>
+
+              <details class="spoiler-nw">
+                <summary>Klik untuk melihat konten</summary>
+                <div class="spoiler-isi">
+                  <div class="cv-cs-group">
+                    <a class="cv-cs-item" href="https://www.facebook.com/share/18VszTHKjD/" target="_blank" rel="noopener noreferrer">
+                      <div class="cv-cs-left">
+                        <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
+                        <span><strong>Facebook</strong> Kecap Borobudur</span>
+                      </div>
+                      <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
+                    </a>
+
+                    <a class="cv-cs-item" href="https://www.instagram.com/kecap.borobudur?stkn=cTlweGQ4ZDF5eWR6" target="_blank" rel="noopener noreferrer">
+                      <div class="cv-cs-left">
+                        <span class="cv-cs-icon"><i class="iconsax" icon-name="document-text-1"></i></span>
+                        <span><strong>Instagram</strong> Kecap Borobudur</span>
+                      </div>
+                      <span class="cv-abi"><i class="iconsax" icon-name="arrow-right-3"></i></span>
+                    </a>
+                  </div>
+                </div>
+              </details>
             </div>
 
             <div class="cv-it">
@@ -612,7 +819,6 @@
               </div>
               <p class="cv-ite">Menyelesaikan esai mengenai isu Pendidikan Karakter. Berkontribusi di beberapa proyek open-source Github.</p>
             </div>
-
           </div>
         </div>
       </div>
@@ -652,7 +858,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -666,4 +871,17 @@ document.querySelectorAll('.cv-ab').forEach(button => {
     parentItem.classList.toggle('active');
   });
 });
+
+function toggleCertificates() {
+  const timeline = document.getElementById('cert-timeline');
+  const btn = document.getElementById('btn-toggle-cert');
+
+  timeline.classList.toggle('show-all');
+
+  if (timeline.classList.contains('show-all')) {
+    btn.innerHTML = '<span>Sembunyikan Sertifikat</span> <i class="iconsax" icon-name="arrow-up-1"></i>';
+  } else {
+    btn.innerHTML = '<span>Lihat Semua Sertifikat</span> <i class="iconsax" icon-name="arrow-down-1"></i>';
+  }
+}
 </script>
