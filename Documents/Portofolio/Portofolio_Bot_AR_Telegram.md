@@ -90,3 +90,6 @@
        ▼
 [Telegram Client] ◄───► Filter Interaktif & Render Image (Matplotlib PNG)
 ```
+
+---
+Karena tidak semua pekerja mempunyai Telegram. Maka proyek ini dilanjutkan dengan proyek lainnya bernama: [Site-AR-Info -> AR View berbasis Web](https://github.com/ACC-TAX-REIGHTEEN/Site-AR-Info)
